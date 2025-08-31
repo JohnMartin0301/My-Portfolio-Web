@@ -906,6 +906,10 @@ footer {
     #contact .container {
         padding: 0 15px;
     }
+
+    footer {
+        font-size: 0.9rem;
+    }
 }
 
 /* Mobile */
@@ -1076,6 +1080,10 @@ footer {
     #contact .container {
         padding: 0 10px;
     }
+
+    footer {
+        font-size: 0.85rem;
+    }
 }
 
 /* Extra small screens */
@@ -1113,4 +1121,9 @@ footer {
     .about-text {
         font-size: 0.9rem;
     }
+
+    footer {
+        font-size: 0.8rem;
+    }
+
 }
