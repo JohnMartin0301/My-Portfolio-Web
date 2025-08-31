@@ -908,6 +908,7 @@ footer {
     }
 
     footer {
+        padding: 0 10px;
         font-size: 0.9rem;
     }
 }
@@ -1082,6 +1083,7 @@ footer {
     }
 
     footer {
+        padding: 0 10px;
         font-size: 0.85rem;
     }
 }
@@ -1127,3 +1129,4 @@ footer {
     }
 
 }
+
