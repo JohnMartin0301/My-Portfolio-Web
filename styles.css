@@ -216,9 +216,7 @@ body {
     padding: 3px 12px 3px 8px;
     margin: 2px 0 6px -2px;
     letter-spacing: 0.02em;
-    white-space: normal;
-    word-break: break-word;
-    max-width: 100%;
+    white-space: nowrap;
     align-self: flex-start;
     width: fit-content;
 }
@@ -1286,7 +1284,7 @@ footer {
     }
 
     .skills {
-        grid-template-columns: repeat(4, minmax(50px, 65px));
+        grid-template-columns: repeat(7, minmax(40px, 55px));
         max-width: 300px;
         gap: 12px;
     }
@@ -1403,7 +1401,7 @@ footer {
     }
 
     .skills {
-        grid-template-columns: repeat(4, minmax(40px, 55px));
+        grid-template-columns: repeat(7, minmax(35px, 45px));
         max-width: 260px;
         gap: 8px;
     }
