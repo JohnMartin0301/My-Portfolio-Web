@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-V69V72G5X0"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-V69V72G5X0');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="favicon_io/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon_io/favicon-16x16.png"> 
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png"> 
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon_io/apple-touch-icon.png"> 
+    <link rel="icon" type="image/png" sizes="192x192" href="favicon_io/android-chrome-192x192.png"> 
+    <link rel="icon" type="image/png" sizes="512x512" href="favicon_io/android-chrome-512x512.png"> 
+    <link rel="manifest" href="favicon_io/site.webmanifest">
+    <title>John Martin - Associate Software Engineer</title>
+</head>
+<body>
+
+    <!-- Ambient background canvas -->
+    <canvas id="networkCanvas" aria-hidden="true"></canvas>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <span class="brand-j">J</span><span class="brand-m">M</span>
+            </div>
+            <div class="nav-links">
+                <a href="#header" class="nav-link">Home</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                <svg id="sunIcon" style="display: none;" viewBox="0 0 24 24">
+                    <path d="M12 17q-2.075 0-3.538-1.463T7 12q0-2.075 1.462-3.538T12 7q2.075 0 3.537 1.462T17 12q0 2.075-1.463 3.537T12 17Zm-7-4H1v-2h4v2Zm16 0h4v-2h-4v2ZM11 5V1h2v4h-2Zm0 18v-4h2v4h-2ZM6.4 7.75L4.275 5.625L5.65 4.25L7.75 6.4L6.4 7.75Zm11.85 11.85l-2.125-2.125L17.35 16.25l2.1 2.1l-1.375 1.375ZM16.25 7.75L14.125 5.625L15.5 4.25l2.1 2.1L16.25 7.75ZM4.25 19.6L5.625 18.225L7.75 20.35L6.375 21.725L4.25 19.6Z"/>
+                </svg>
+                <svg id="moonIcon" viewBox="0 0 24 24">
+                    <path d="M12 21q-3.75 0-6.375-2.625T3 12q0-3.75 2.625-6.375T12 3q.35 0 .688.025t.662.075q-1.025.725-1.688 1.888T11 7.5q0 2.25 1.575 3.825T16.4 12.9q.875 0 1.738-.362t1.587-1.088q.05.325.075.662T20 12.5q0 3.75-2.625 6.375T12 21Z"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <header class="header" id="header">
+        <!-- Subtle cloud accent shapes -->
+        <div class="cloud-accent cloud-accent--1" aria-hidden="true"></div>
+        <div class="cloud-accent cloud-accent--2" aria-hidden="true"></div>
+
+        <div class="container">
+            <div class="main-content">
+                <div class="profile-header">
+                    <div class="profile-zoom">
+                        <img src="img/pic1.png" alt="Profile Front">
+                        <img src="img/pic2.jpg" alt="Profile Back">
+                    </div>
+                    <div class="profile-info">
+                        <h1>Hi, I'm John Martin 👋</h1>
+                        <h2 class="subtitle">Associate Software Engineer</h2>
+                        <!-- Role badge -->
+                        <div class="role-badge">
+                            <span class="role-badge__dot"></span>
+                            App &amp; Cloud Support · Infrastructure Engineering
+                        </div>
+                        <div class="location">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                            </svg>
+                            Laoag City, Philippines
+                        </div>
+                        <div class="social-links">
+                            <a href="https://github.com/JohnMartin0301" target="_blank" aria-label="GitHub">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            </a>
+                            <a href="mailto:john.martin00316@gmail.com" aria-label="Email">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                            </a>
+                            <a href="https://www.linkedin.com/in/john-carlo-martin-53189536b/" target="_blank" aria-label="LinkedIn">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <p class="about-text">
+                    Computer Engineering graduate and Associate Software Engineer specializing in Application & Cloud Support, focused on maintaining reliable cloud applications and solving system issues. Builds efficient and functional solutions using Python, front-end development, and embedded systems.
+                </p>
+
+                <!-- Infra stat chips — subtle cloud/devops flair -->
+                <div class="infra-chips" aria-hidden="true">
+                    <span class="infra-chip">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+                        Cloud Support
+                    </span>
+                    <span class="infra-chip">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20 6H4V4h16v2zm1 10v-4c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v4c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zm-3-1H6v-2h12v2zm0 6H6v-2h12v2zM5 22v-2H4V8H3v12H2V8H1V6h1V4h2V2h14v2h2v2h1v2h-1v12h-1v2H5z" opacity=".3"/><path d="M20 3H4c-1.1 0-2 .9-2 2v3c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 4H9V5h6v2zm5 4H4v2h16v-2zm0 4H4v2h16v-2zm0 4H4v2h16v-2z"/></svg>
+                        Infrastructure Eng.
+                    </span>
+                    <span class="infra-chip">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        App Monitoring
+                    </span>
+                    <span class="infra-chip">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/></svg>
+                        System Ops
+                    </span>
+                </div>
+                
+                <div class="skills">
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python" /><span>Python</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/javascript/javascript-original.svg" alt="JavaScript" /><span>JavaScript</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/html5/html5-original.svg" alt="HTML" /><span>HTML</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/css3/css3-original.svg" alt="CSS" /><span>CSS</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/flask/flask-original.svg" alt="Flask" /><span>Flask</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="FastAPI" /><span>FastAPI</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/sqlite/sqlite-original.svg" alt="SQLite" /><span>SQLite</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker" /><span>Docker</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/git/git-original.svg" alt="Git" /><span>Git</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="GitHub" /><span>GitHub</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/powershell/powershell-original.svg" alt="PowerShell" /><span>PowerShell</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/bash/bash-original.svg" alt="Bash" /><span>Bash</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vscode/vscode-original.svg" alt="VS Code" /><span>VS Code</span></div>
+                    <div class="skill-icon"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postman/postman-original.svg" alt="Postman" /><span>Postman</span></div>
+                </div>
+
+                <div class="profile-scroll">
+                    <a href="#projects" class="scroll-indicator">
+                        <div class="scroll-arrow"></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Projects Section -->
+<section id="projects">
+    <div class="section-accent" aria-hidden="true"></div>
+    <div class="container">
+        <h2>
+            Featured Projects
+        </h2>
+
+        <!-- Filter Buttons -->
+        <div class="project-filters">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="personal">Personal Projects</button>
+            <button class="filter-btn" data-filter="college">College & Internship</button>
+        </div>
+
+        <div class="projects-grid" id="projectsGrid">
+
+            <!-- PERSONAL PROJECTS -->
+            <div class="project-card" data-category="personal">
+                <div class="project-image">
+                    <div class="project-preview" data-hover-text="Personal Project">
+                        <img src="img/cloudeye.png" alt="CloudEye">
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">CloudEye</h3>
+                    <p class="project-description">A real-time infrastructure monitoring platform with automated incident management, log analysis, and system health dashboards.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">FastAPI</span>
+                        <span class="tech-tag">Docker</span>
+                    </div>
+                    <a href="https://github.com/JohnMartin0301/CloudEye-Cloud-Operations-Monitoring-Platform" class="project-link">View Project →</a>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="personal">
+                <div class="project-image">
+                    <div class="project-preview" data-hover-text="Personal Project">
+                        <img src="img/itsit.png" alt="ITSIT">
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">ITSIT</h3>
+                    <p class="project-description">A cross-platform CLI toolkit that automates IT support tasks: system health checks, website uptime monitoring, and log analysis.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">psutil</span>
+                        <span class="tech-tag">PyInstaller</span>
+                    </div>
+                    <a href="https://github.com/JohnMartin0301/ITSIT-IT-Support-Infrastructure-Toolkit" class="project-link">View Project →</a>
+                </div>
+            </div>
+
+            <!-- COLLEGE & INTERNSHIP PROJECTS -->
+            <div class="project-card" data-category="college">
+                <div class="project-image">
+                    <div class="project-preview" data-hover-text="Capstone">
+                        <img src="img/biometric-activated-smart-classroom.jpg" alt="Biometric Activated Smart Classroom">
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Biometric-Activated Smart Classroom</h3>
+                    <p class="project-description">Integrates biometrics, RFID, IoT, CCTV, and automation for classroom efficiency and security.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Arduino</span>
+                        <span class="tech-tag">Biometrics</span>
+                        <span class="tech-tag">ESP32</span>
+                    </div>
+                    <a href="https://youtu.be/sNODXqhhLto?si=SMuAhbVNWyxLYZOb" class="project-link">View Project →</a>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="college">
+                <div class="project-image">
+                    <div class="project-preview" data-hover-text="Internship Project">
+                        <img src="img/warrant-searcher-application.png" alt="Warrant Searcher Application">
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">Warrant Searcher App</h3>
+                    <p class="project-description">Government-deployed warrant document search app with OCR support for scanned images, PDFs, and docs, officially adopted by NBI Laoag.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">Tesseract OCR</span>
+                        <span class="tech-tag">Tkinter</span>
+                    </div>
+                    <a href="https://github.com/JohnMartin0301/Warrant-Searcher-Application" class="project-link">View Project →</a>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="college">
+                <div class="project-image">
+                    <div class="project-preview" data-hover-text="Technopreneurship Project">
+                        <img src="img/citinex-ai.jpg" alt="CitiNexAi">
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">CitiNexAI (Web Prototype)</h3>
+                    <p class="project-description">Interactive front-end prototype showcasing AI, IoT, and GIS for smarter urban planning.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">HTML5</span>
+                        <span class="tech-tag">CSS3</span>
+                        <span class="tech-tag">JavaScript</span>
+                    </div>
+                    <a href="https://johnmartin0301.github.io/CitiNex-AI/" class="project-link">View Project →</a>
+                </div>
+            </div>
+
+            <div class="project-card" data-category="college">
+                <div class="project-image">
+                    <div class="project-preview" data-hover-text="Academic Project">
+                        <img src="img/automated-attendance-system-using-qr-code.png" alt="Automated Attendance System using QR-Code">
+                    </div>
+                </div>
+                <div class="project-content">
+                    <h3 class="project-title">QR Attendance System</h3>
+                    <p class="project-description">Automated attendance recording system using QR codes for fast, accurate, and paperless tracking.</p>
+                    <div class="tech-stack">
+                        <span class="tech-tag">Python</span>
+                        <span class="tech-tag">QR-Code</span>
+                        <span class="tech-tag">Tkinter</span>
+                    </div>
+                    <a href="https://github.com/JohnMartin0301/Automated-Attendance-System-using-QR-Code" class="project-link">View Project →</a>
+                </div>
+            </div>
+
+        </div><!-- end .projects-grid -->
+    </div>
+</section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <div class="section-accent section-accent--right" aria-hidden="true"></div>
+        <div class="container">
+            <h2>
+                Get In Touch
+            </h2>
+            <form class="contact-form" id="contactForm" action="https://formspree.io/f/meolkoel" method="POST">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                    <div id="name-error" class="form-error" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                    <div id="email-error" class="form-error" style="display: none;"></div>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                    <div id="message-error" class="form-error" style="display: none;"></div>
+                </div>
+                <button type="submit" class="submit-btn">Send</button>
+            </form>
+            <div class="contact-socials">
+                <a href="https://github.com/JohnMartin0301" target="_blank" aria-label="GitHub">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                </a>
+                <a href="mailto:john.martin00316@gmail.com" aria-label="Email">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/john-carlo-martin-53189536b/" target="_blank" aria-label="LinkedIn">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 John Martin. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
