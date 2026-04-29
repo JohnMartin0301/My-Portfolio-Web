@@ -164,35 +164,47 @@ body {
    INFRA CHIPS
 ───────────────────────────────────────── */
 .infra-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px;
     margin: 18px auto 28px;
-    max-width: 800px;
+    max-width: calc(7 * 60px + 6 * 14px);
+    width: 100%;
+    padding: 0;
 }
 
 .infra-chip {
-    display: inline-flex;
+    display: flex;
     align-items: center;
+    justify-content: center;
     gap: 5px;
     background: var(--chip-bg);
     border: 1px solid var(--chip-border);
     color: var(--chip-text);
-    font-size: 0.72rem;
-    font-weight: 500;
+    font-size: 0.70rem;
+    font-weight: 600;
     letter-spacing: 0.03em;
-    padding: 4px 11px 4px 9px;
+    padding: 4px 8px;
     border-radius: 20px;
     transition: background 0.25s ease, border-color 0.25s ease;
+    white-space: nowrap;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .infra-chip svg {
     width: 13px;
     height: 13px;
-    fill: var(--chip-text);
+    fill: none;
+    stroke: var(--chip-text);
+    stroke-width: 2;
     opacity: 0.85;
     flex-shrink: 0;
+}
+
+.infra-chip svg.icon-filled {
+    fill: var(--chip-text);
+    stroke: none;
 }
 
 .infra-chip:hover {
@@ -219,6 +231,8 @@ body {
     white-space: nowrap;
     align-self: flex-start;
     width: fit-content;
+    position: relative;
+    cursor: default;
 }
 
 .role-badge__dot {
@@ -229,15 +243,105 @@ body {
     flex-shrink: 0;
     box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
     animation: pulse-dot 2.4s ease infinite;
+    cursor: pointer;
 }
 
 @keyframes pulse-dot {
-    0%, 100% { 
-        box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2); 
+    0%, 100% {
+        box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.08);
+    }
+}
+
+/* ── Status Tooltip ── */
+.status-tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(4px);
+    transition: opacity 0.25s ease,
+                visibility 0.25s ease,
+                transform 0.25s ease;
+    pointer-events: none;
+    z-index: 200;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: nowrap;
+}
+
+.role-badge__dot:hover ~ .status-tooltip,
+.role-badge.tooltip-active .status-tooltip {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* ── shared text colors ── */
+.t-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.t-g    { color: #22c55e; font-weight: 700; }
+.t-mu   { color: #52525b; }
+.t-bl   { color: #7db4f8; }
+.t-wh   { color: #a1a1aa; }
+.t-arrow { color: #22c55e; }
+.t-div  { color: #333333; }
+
+/* ── VARIANT 1: floating pill ── */
+.tip-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    background: rgba(10, 10, 10, 0.95);
+    border: 1px solid rgba(34, 197, 94, 0.28);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.68rem;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.07);
+}
+
+/* ── light mode overrides ── */
+[data-theme="light"] .tip-1 {
+    background: rgba(255, 255, 255, 0.95);
+    border-color: var(--border-color);
+    border-left-color: #22c55e;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="light"] .t-mu { color: #a1a1aa; }
+[data-theme="light"] .t-wh { color: #52525b; }
+[data-theme="light"] .t-g  { color: #16a34a; }
+[data-theme="light"] .t-bl { color: #2563eb; }
+
+/* ── mobile ── */
+@media (max-width: 768px) {
+    .status-tooltip {
+        left: 50%;
+        transform: translateX(-50%) translateY(4px);
     }
 
-    50% { 
-        box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.08); 
+    .role-badge__dot:hover ~ .status-tooltip,
+    .role-badge.tooltip-active .status-tooltip {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@media (max-width: 360px) {
+    .status-tooltip {
+        font-size: 0.6rem;
+        left: 0;
+        transform: translateY(4px);
+    }
+
+    .role-badge__dot:hover ~ .status-tooltip,
+    .role-badge.tooltip-active .status-tooltip {
+        transform: translateY(0);
     }
 }
 
@@ -499,15 +603,22 @@ h2 {
 
 .about-text {
     font-size: 1.05rem;
-    line-height: 1.7;
+    line-height: 1.6;
     color: var(--text-color);
-    margin: 0 auto 30px;
     max-width: 500px;
     margin-left: auto;
     margin-right: auto;
     text-align: justify;
     text-justify: inter-word;
     hyphens: none;
+}
+
+.about-text p {
+    margin-bottom: 16px;
+}
+
+.about-text p:last-child {
+    margin-bottom: 35px;
 }
 
 /* ─────────────────────────────────────────
@@ -517,7 +628,7 @@ h2 {
     display: grid;
     grid-template-columns: repeat(7, minmax(60px, 80px));
     grid-template-rows: repeat(2, 1fr);
-    gap: 15px;
+    gap: 17px;
     justify-content: center;
     margin-top: 20px;
     max-width: 450px;
@@ -1053,6 +1164,16 @@ footer {
         font-size: 0.9rem; 
     }
 
+    .status-tooltip {
+        max-width: 90vw;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .tip-1 {
+        white-space: nowrap;
+    }
+
     .header { 
         padding: 120px 0 60px; 
     }
@@ -1061,6 +1182,7 @@ footer {
         flex-direction: column;
         gap: 20px;
         text-align: center;
+        margin-bottom: 10px;
     }
 
     .profile-info h1 { 
@@ -1092,33 +1214,41 @@ footer {
 
     .about-text {
         font-size: 1rem;
-        margin: 0 auto 30px;
-        padding: 15px;
+        padding: 20px;
+    }
+
+    .about-text p:last-child {
+        margin-bottom: 20px;
     }
 
     .infra-chips { 
-        max-width: 340px; 
+        max-width: calc(7 * 55px + 6 * 13px); 
         margin-top: 0;
         margin-bottom: 28px;
+        padding: 0;
+    }
+
+    .infra-chip {
+        font-size: 0.60rem;
     }
 
     .skills {
-        grid-template-columns: repeat(7, minmax(40px, 55px));
+        grid-template-columns: repeat(7, minmax(61px, 76px));
         max-width: 420px;
         gap: 10px;
     }
 
     .skill-icon { 
-        font-size: 22px; 
+        font-size: 24px; 
     }
 
     .skill-icon img {
-        width: 22px;
-        height: 22px
+        width: 24px;
+        height: 24px
     }
 
     .skill-icon span { 
-        font-size: 11px; 
+        font-size: 12px; 
     }
 
     #projects h2 { 
@@ -1270,32 +1400,38 @@ footer {
 
     .about-text { 
         font-size: 0.9rem;
-        margin: 0 auto 24px;
-        padding: 0 10px; 
+        padding: 0 35px; 
     }
 
-    .infra-chips { 
-        gap: 6px; 
+    .about-text p:last-child {
+        margin-bottom: 24px;
+    }
+
+    .infra-chips {
+        max-width: calc(7 * 40px + 6 * 18px);
+        gap: 4px; 
+        padding: 0;
     }
 
     .infra-chip { 
-        font-size: 0.68rem; 
-        padding: 3px 9px 3px 7px; 
+        font-size: 0.50rem; 
+        padding: 3px 7px 3px 6px; 
+        gap: 5px;
     }
 
     .skills {
-        grid-template-columns: repeat(7, minmax(40px, 55px));
+        grid-template-columns: repeat(7, minmax(50px, 65px));
         max-width: 300px;
-        gap: 12px;
+        gap: 10px;
     }
 
     .skill-icon { 
-        font-size: 24px; 
+        font-size: 22px; 
     }
 
     .skill-icon img { 
-        width: 24px; 
-        height: 24px; 
+        width: 22px; 
+        height: 22px; 
     }
 
     .skill-icon span { 
@@ -1400,10 +1536,14 @@ footer {
         font-size: 0.8rem; 
     }
 
+    .profile-header {
+        margin-bottom: 0;
+    }
+
     .skills {
         grid-template-columns: repeat(7, minmax(35px, 45px));
         max-width: 260px;
-        gap: 8px;
+        gap: 10px;
     }
 
     .skill-icon {
@@ -1424,7 +1564,9 @@ footer {
     }
 
     .about-text { 
-        font-size: 0.9rem; 
+        font-size: 0.8rem; 
+        padding: 20px;
+        margin-bottom: -10px;
     }
 
     footer { 
@@ -1433,12 +1575,29 @@ footer {
 
     /* Chips wrap tightly on tiny screens */
     .infra-chip { 
-        font-size: 0.64rem; 
-        padding: 3px 7px 3px 6px; 
+        font-size: 0.40rem; 
+        padding: 2px 6px 2px 5px; 
     }
 
-    .infra-chips { 
-        gap: 5px; 
-        max-width: 260px; 
+    .infra-chips {
+        max-width: calc(7 * 36px + 6 * 8px); 
+        gap: 4px; 
+        padding: 0; 
+    }
+}
+
+/* ─────────────────────────────────────────
+   RESPONSIVE: ULTRA SMALL (≤ 280px)
+───────────────────────────────────────── */
+@media (max-width: 280px) {
+    .infra-chips {
+        gap: 3px;
+        flex-wrap: wrap;
+    }
+
+    .infra-chip {
+        font-size: 0.40rem;
+        padding: 2px 5px;
+        gap: 3px;
     }
 }

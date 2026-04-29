@@ -125,6 +125,63 @@ themeToggle.addEventListener('click', () => {
     updateThemeIcons(newTheme);
 });
 
+// ─────────────────────────────────────────
+// STATUS TOOLTIP — dot hover + mobile tap
+// ─────────────────────────────────────────
+(function initStatusTooltip() {
+    const roleBadge = document.getElementById('roleBadge');
+    const dot       = document.querySelector('.role-badge__dot');
+    if (!roleBadge || !dot) return;
+
+    // uptime counter
+    const startTime = Date.now();
+
+    function formatUptime(ms) {
+        const s  = Math.floor(ms / 1000);
+        const h  = Math.floor(s / 3600);
+        const m  = Math.floor((s % 3600) / 60);
+        const sc = s % 60;
+        return [h, m, sc].map(n => String(n).padStart(2, '0')).join(':');
+    }
+
+    // simulated response time
+    let baseLatency = 18;
+
+    function getLatency() {
+        baseLatency += (Math.random() - 0.5) * 4;
+        baseLatency = Math.max(8, Math.min(42, baseLatency));
+        return Math.round(baseLatency) + ' ms';
+    }
+
+    function tick() {
+        const elapsed    = Date.now() - startTime;
+        const uptimeStr  = formatUptime(elapsed);
+        const latencyStr = getLatency();
+
+        document.querySelectorAll('.uptime-counter').forEach(el => {
+            el.textContent = uptimeStr;
+        });
+        document.querySelectorAll('.latency-counter').forEach(el => {
+            el.textContent = latencyStr;
+        });
+    }
+
+    setInterval(tick, 1000);
+    tick();
+
+    // mobile tap toggle on dot only
+    dot.addEventListener('click', (e) => {
+        e.stopPropagation(); // prevent bubbling to document
+        roleBadge.classList.toggle('tooltip-active');
+    });
+
+    // close when tapping anywhere else
+    document.addEventListener('click', (e) => {
+        if (!roleBadge.contains(e.target)) {
+            roleBadge.classList.remove('tooltip-active');
+        }
+    });
+})();
 
 // ─────────────────────────────────────────
 // NAVBAR SCROLL SHADOW
