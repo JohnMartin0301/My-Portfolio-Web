@@ -60,8 +60,8 @@
             <div class="main-content">
                 <div class="profile-header">
                     <div class="profile-zoom">
-                        <img src="img/pic1.png" alt="Profile Front">
-                        <img src="img/pic2.jpg" alt="Profile Back">
+                        <img src="img/pic1.jpg" alt="Profile Front">
+                        <img src="img/pic2.png" alt="Profile Back">
                     </div>
                     <div class="profile-info">
                         <h1>Hi, I'm John Martin 👋</h1>
@@ -116,7 +116,7 @@
                     working on Windows Server infrastructure, building and 
                     provisioning production systems in cloud environments.</p>
 
-                    <p>I build Python-powered tools and automations that cut manual 
+                    <p>I specialize in Python to build tools and automations that cut manual 
                     work and improve efficiency, with experience across backend, front-end, and embedded systems.</p>
 
                     <p>Less downtime. Less manual work. That's the goal.</p>
@@ -199,135 +199,135 @@
     </header>
 
     <!-- Projects Section -->
-<section id="projects">
-    <div class="section-accent" aria-hidden="true"></div>
-    <div class="container">
-        <h2>
-            Featured Projects
-        </h2>
+    <section id="projects">
+        <div class="section-accent" aria-hidden="true"></div>
+        <div class="container">
+            <h2>
+                Featured Projects
+            </h2>
 
-        <!-- Filter Buttons -->
-        <div class="project-filters">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="personal">Personal Projects</button>
-            <button class="filter-btn" data-filter="college">College & Internship</button>
+            <!-- Filter Buttons -->
+            <div class="project-filters">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="personal">Personal Projects</button>
+                <button class="filter-btn" data-filter="college">College & Internship</button>
+            </div>
+
+            <div class="projects-grid" id="projectsGrid">
+
+                <!-- PERSONAL PROJECTS -->
+                <div class="project-card" data-category="personal">
+                    <div class="project-image">
+                        <div class="project-preview" data-hover-text="Personal Project">
+                            <img src="img/cloudeye.png" alt="CloudEye">
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">CloudEye</h3>
+                        <p class="project-description">A real-time infrastructure monitoring platform with automated incident management, log analysis, and system health dashboards.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">FastAPI</span>
+                            <span class="tech-tag">Docker</span>
+                        </div>
+                        <a href="https://github.com/JohnMartin0301/CloudEye-Cloud-Operations-Monitoring-Platform" class="project-link">View Project →</a>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="personal">
+                    <div class="project-image">
+                        <div class="project-preview" data-hover-text="Personal Project">
+                            <img src="img/itsit.png" alt="ITSIT">
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">ITSIT</h3>
+                        <p class="project-description">A cross-platform CLI toolkit that automates IT support tasks: system health checks, website uptime monitoring, and log analysis.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">psutil</span>
+                            <span class="tech-tag">PyInstaller</span>
+                        </div>
+                        <a href="https://github.com/JohnMartin0301/ITSIT-IT-Support-Infrastructure-Toolkit" class="project-link">View Project →</a>
+                    </div>
+                </div>
+
+                <!-- COLLEGE & INTERNSHIP PROJECTS -->
+                <div class="project-card" data-category="college">
+                    <div class="project-image">
+                        <div class="project-preview" data-hover-text="Capstone">
+                            <img src="img/biometric-activated-smart-classroom.jpg" alt="Biometric Activated Smart Classroom">
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Biometric-Activated Smart Classroom</h3>
+                        <p class="project-description">Integrates biometrics, RFID, IoT, CCTV, and automation for classroom efficiency and security.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Arduino</span>
+                            <span class="tech-tag">Biometrics</span>
+                            <span class="tech-tag">ESP32</span>
+                        </div>
+                        <a href="https://youtu.be/sNODXqhhLto?si=SMuAhbVNWyxLYZOb" class="project-link">View Project →</a>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="college">
+                    <div class="project-image">
+                        <div class="project-preview" data-hover-text="Internship Project">
+                            <img src="img/warrant-searcher-application.png" alt="Warrant Searcher Application">
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Warrant Searcher App</h3>
+                        <p class="project-description">Government-deployed OCR tool that automates warrant document search across scanned images, PDFs, and docs — officially adopted by NBI Laoag.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Tesseract OCR</span>
+                            <span class="tech-tag">Tkinter</span>
+                        </div>
+                        <a href="https://github.com/JohnMartin0301/Warrant-Searcher-Application" class="project-link">View Project →</a>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="college">
+                    <div class="project-image">
+                        <div class="project-preview" data-hover-text="Technopreneurship Project">
+                            <img src="img/citinex-ai.jpg" alt="CitiNexAi">
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">CitiNexAI (Web Prototype)</h3>
+                        <p class="project-description">Interactive front-end prototype showcasing AI, IoT, and GIS for smarter urban planning.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">HTML5</span>
+                            <span class="tech-tag">CSS3</span>
+                            <span class="tech-tag">JavaScript</span>
+                        </div>
+                        <a href="https://citinexai.netlify.app/" class="project-link">View Project →</a>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="college">
+                    <div class="project-image">
+                        <div class="project-preview" data-hover-text="Academic Project">
+                            <img src="img/automated-attendance-system-using-qr-code.png" alt="Automated Attendance System using QR-Code">
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">QR Attendance System</h3>
+                        <p class="project-description">Automated attendance recording system using QR codes for fast, accurate, and paperless tracking.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">QR-Code</span>
+                            <span class="tech-tag">Tkinter</span>
+                        </div>
+                        <a href="https://github.com/JohnMartin0301/Automated-Attendance-System-using-QR-Code" class="project-link">View Project →</a>
+                    </div>
+                </div>
+
+            </div><!-- end .projects-grid -->
         </div>
-
-        <div class="projects-grid" id="projectsGrid">
-
-            <!-- PERSONAL PROJECTS -->
-            <div class="project-card" data-category="personal">
-                <div class="project-image">
-                    <div class="project-preview" data-hover-text="Personal Project">
-                        <img src="img/cloudeye.png" alt="CloudEye">
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">CloudEye</h3>
-                    <p class="project-description">A real-time infrastructure monitoring platform with automated incident management, log analysis, and system health dashboards.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">FastAPI</span>
-                        <span class="tech-tag">Docker</span>
-                    </div>
-                    <a href="https://github.com/JohnMartin0301/CloudEye-Cloud-Operations-Monitoring-Platform" class="project-link">View Project →</a>
-                </div>
-            </div>
-
-            <div class="project-card" data-category="personal">
-                <div class="project-image">
-                    <div class="project-preview" data-hover-text="Personal Project">
-                        <img src="img/itsit.png" alt="ITSIT">
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">ITSIT</h3>
-                    <p class="project-description">A cross-platform CLI toolkit that automates IT support tasks: system health checks, website uptime monitoring, and log analysis.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">psutil</span>
-                        <span class="tech-tag">PyInstaller</span>
-                    </div>
-                    <a href="https://github.com/JohnMartin0301/ITSIT-IT-Support-Infrastructure-Toolkit" class="project-link">View Project →</a>
-                </div>
-            </div>
-
-            <!-- COLLEGE & INTERNSHIP PROJECTS -->
-            <div class="project-card" data-category="college">
-                <div class="project-image">
-                    <div class="project-preview" data-hover-text="Capstone">
-                        <img src="img/biometric-activated-smart-classroom.jpg" alt="Biometric Activated Smart Classroom">
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">Biometric-Activated Smart Classroom</h3>
-                    <p class="project-description">Integrates biometrics, RFID, IoT, CCTV, and automation for classroom efficiency and security.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Arduino</span>
-                        <span class="tech-tag">Biometrics</span>
-                        <span class="tech-tag">ESP32</span>
-                    </div>
-                    <a href="https://youtu.be/sNODXqhhLto?si=SMuAhbVNWyxLYZOb" class="project-link">View Project →</a>
-                </div>
-            </div>
-
-            <div class="project-card" data-category="college">
-                <div class="project-image">
-                    <div class="project-preview" data-hover-text="Internship Project">
-                        <img src="img/warrant-searcher-application.png" alt="Warrant Searcher Application">
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">Warrant Searcher App</h3>
-                    <p class="project-description">Government-deployed warrant document search app with OCR support for scanned images, PDFs, and docs, officially adopted by NBI Laoag.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">Tesseract OCR</span>
-                        <span class="tech-tag">Tkinter</span>
-                    </div>
-                    <a href="https://github.com/JohnMartin0301/Warrant-Searcher-Application" class="project-link">View Project →</a>
-                </div>
-            </div>
-
-            <div class="project-card" data-category="college">
-                <div class="project-image">
-                    <div class="project-preview" data-hover-text="Technopreneurship Project">
-                        <img src="img/citinex-ai.jpg" alt="CitiNexAi">
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">CitiNexAI (Web Prototype)</h3>
-                    <p class="project-description">Interactive front-end prototype showcasing AI, IoT, and GIS for smarter urban planning.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">HTML5</span>
-                        <span class="tech-tag">CSS3</span>
-                        <span class="tech-tag">JavaScript</span>
-                    </div>
-                    <a href="https://citinexai.netlify.app/" class="project-link">View Project →</a>
-                </div>
-            </div>
-
-            <div class="project-card" data-category="college">
-                <div class="project-image">
-                    <div class="project-preview" data-hover-text="Academic Project">
-                        <img src="img/automated-attendance-system-using-qr-code.png" alt="Automated Attendance System using QR-Code">
-                    </div>
-                </div>
-                <div class="project-content">
-                    <h3 class="project-title">QR Attendance System</h3>
-                    <p class="project-description">Automated attendance recording system using QR codes for fast, accurate, and paperless tracking.</p>
-                    <div class="tech-stack">
-                        <span class="tech-tag">Python</span>
-                        <span class="tech-tag">QR-Code</span>
-                        <span class="tech-tag">Tkinter</span>
-                    </div>
-                    <a href="https://github.com/JohnMartin0301/Automated-Attendance-System-using-QR-Code" class="project-link">View Project →</a>
-                </div>
-            </div>
-
-        </div><!-- end .projects-grid -->
-    </div>
-</section>
+    </section>
 
     <!-- Contact Section -->
     <section id="contact">
@@ -336,6 +336,7 @@
             <h2>
                 Get In Touch
             </h2>
+            <p class="contact-subtitle">Whether it's a job opportunity or a project — my inbox is always up.</p>
             <form class="contact-form" id="contactForm" action="https://formspree.io/f/meolkoel" method="POST">
                 <div class="form-group">
                     <label for="name">Name</label>

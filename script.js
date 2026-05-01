@@ -638,14 +638,31 @@ function submitForm(name, email, message) {
 // ─────────────────────────────────────────
 // SUCCESS MODAL
 // ─────────────────────────────────────────
+function closeSuccessModal() {
+    const modal = document.getElementById('successModal');
+    if (!modal) return;
+    modal.classList.remove('show');
+    setTimeout(() => {
+        modal.remove();
+        const styles = document.getElementById('modalStyles');
+        if (styles) styles.remove();
+    }, 300);
+}
+
+// expose globally before showSuccessModal so onclick can find it
+window.closeSuccessModal = closeSuccessModal;
+
 function showSuccessModal() {
     const modalHTML = `
         <div class="success-modal" id="successModal">
             <div class="modal-content">
                 <div class="success-icon">✅</div>
-                <h2 class="modal-title">Message Sent!</h2>
-                <p class="modal-message">Thank you for sending a message!<br>I'll get back to you as soon as possible.</p>
-                <button class="modal-close-btn" onclick="closeSuccessModal()">Awesome!</button>
+                <h2 class="modal-title">Request Received.</h2>
+                <p class="modal-message">
+                    Status: <span style="color:#22c55e; font-weight:600;">202 Accepted</span><br>
+                    Message queued — I'll follow up with you shortly.
+                </p>
+                <button class="modal-close-btn" onclick="window.closeSuccessModal()">Got it.</button>
             </div>
         </div>`;
 
@@ -653,68 +670,153 @@ function showSuccessModal() {
         <style id="modalStyles">
             .success-modal {
                 position: fixed; inset: 0;
-                background: rgba(0,0,0,0.8);
-                backdrop-filter: blur(5px);
+                background: rgba(0,0,0,0.75);
+                backdrop-filter: blur(8px);
                 display: flex; justify-content: center; align-items: center;
                 z-index: 9999;
                 opacity: 0; visibility: hidden;
                 transition: all 0.3s ease;
             }
             .success-modal.show { opacity: 1; visibility: visible; }
+
             .modal-content {
-                background: var(--card-bg); color: var(--text-color);
-                border: 1px solid var(--border-color);
-                padding: 40px; border-radius: 20px; text-align: center;
-                max-width: 400px; width: 90%; margin: 20px;
-                max-height: 90vh; overflow-y: auto;
-                transform: scale(0.8) translateY(50px);
+                background: var(--card-bg);
+                color: var(--text-color);
+                border: 1px solid var(--accent-color);
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+                padding: 40px;
+                border-radius: 8px;
+                text-align: center;
+                max-width: 400px;
+                width: 90%;
+                margin: 20px;
+                max-height: 90vh;
+                overflow-y: auto;
+                transform: scale(0.95) translateY(20px);
                 transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
-                box-shadow: 0 20px 60px rgba(59,130,246,0.12), 0 8px 32px rgba(0,0,0,0.3);
+                box-shadow: 0 8px 32px rgba(59,130,246,0.10),
+                            0 4px 16px rgba(0,0,0,0.2);
             }
-            .success-modal.show .modal-content { transform: scale(1) translateY(0); }
+            .success-modal.show .modal-content {
+                transform: scale(1) translateY(0);
+            }
+
             .success-icon {
-                width: 80px; height: 80px;
-                background: var(--accent-color); border-radius: 50%;
+                width: 56px; height: 56px;
+                background: var(--chip-bg);
+                border: 1px solid var(--chip-border);
+                border-radius: 8px;
                 display: flex; align-items: center; justify-content: center;
-                margin: 0 auto 20px; font-size: 40px; color: white;
-                animation: bounceIn 0.6s ease 0.3s both;
+                margin: 0 auto 20px;
+                font-size: 28px;
+                animation: bounceIn 0.5s ease 0.2s both;
             }
+
             @keyframes bounceIn {
-                0%   { transform: scale(0); opacity: 0; }
-                50%  { transform: scale(1.1); }
+                0%   { transform: scale(0.8); opacity: 0; }
+                60%  { transform: scale(1.05); }
                 100% { transform: scale(1); opacity: 1; }
             }
-            .modal-title { font-size: 28px; font-weight: bold; margin-bottom: 15px; animation: slideInUp 0.5s ease 0.4s both; }
-            .modal-message { font-size: 18px; line-height: 1.5; margin-bottom: 30px; color: var(--text-color); animation: slideInUp 0.5s ease 0.5s both; }
+
+            .modal-title {
+                font-size: 1.3rem;
+                font-weight: 700;
+                margin-bottom: 10px;
+                color: var(--text-color);
+                animation: slideInUp 0.4s ease 0.3s both;
+            }
+
+            .modal-message {
+                font-size: 0.92rem;
+                line-height: 1.6;
+                margin-bottom: 28px;
+                color: var(--text-muted);
+                animation: slideInUp 0.4s ease 0.4s both;
+            }
+
             @keyframes slideInUp {
-                0%   { transform: translateY(30px); opacity: 0; }
+                0%   { transform: translateY(16px); opacity: 0; }
                 100% { transform: translateY(0); opacity: 1; }
             }
+
             .modal-close-btn {
-                background: var(--accent-color); color: white;
-                border: none; padding: 12px 30px; border-radius: 8px;
-                cursor: pointer; font-size: 16px; font-weight: 600;
-                transition: all 0.3s ease; animation: slideInUp 0.5s ease 0.6s both;
-                min-height: 44px; min-width: 120px;
+                background: var(--accent-color);
+                color: white;
+                border: none;
+                padding: 10px 28px;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 0.9rem;
+                font-weight: 600;
+                letter-spacing: 0.02em;
+                transition: background 0.25s ease, box-shadow 0.25s ease;
+                animation: slideInUp 0.4s ease 0.5s both;
+                min-height: 40px;
+                min-width: 110px;
             }
+
             .modal-close-btn:hover {
-                filter: brightness(1.1); transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(59,130,246,0.4);
+                background: #2563eb;
+                box-shadow: 0 4px 16px rgba(59,130,246,0.3);
             }
-            .submit-btn.loading { position: relative; overflow: hidden; }
+
+            .submit-btn.loading {
+                position: relative;
+                overflow: hidden;
+            }
+
             .submit-btn.loading::after {
-                content: ''; position: absolute; top: 0; left: -100%;
+                content: '';
+                position: absolute; top: 0; left: -100%;
                 width: 100%; height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
                 animation: shimmer 1.5s infinite;
             }
-            @keyframes shimmer { 0% { left: -100%; } 100% { left: 100%; } }
+
+            @keyframes shimmer {
+                0%   { left: -100%; }
+                100% { left: 100%; }
+            }
+
+            @media (max-width: 768px) {
+                .modal-content {
+                    padding: 32px 24px;
+                    max-width: 360px;
+                }
+            }
+
             @media (max-width: 480px) {
-                .modal-content { padding: 30px 20px; border-radius: 16px; width: calc(100vw - 30px); }
-                .success-icon { width: 60px; height: 60px; font-size: 30px; }
-                .modal-title { font-size: 24px; }
-                .modal-message { font-size: 15px; margin-bottom: 25px; }
-                .modal-close-btn { min-height: 48px; }
+                .modal-content {
+                    padding: 28px 20px;
+                    border-radius: 8px;
+                    width: calc(100vw - 32px);
+                    margin: 16px;
+                }
+                .success-icon {
+                    width: 48px; height: 48px;
+                    font-size: 24px;
+                    margin-bottom: 16px;
+                }
+                .modal-title { font-size: 1.1rem; }
+                .modal-message {
+                    font-size: 0.88rem;
+                    margin-bottom: 22px;
+                }
+                .modal-close-btn {
+                    min-height: 44px;
+                    width: 100%;
+                    padding: 12px 20px;
+                }
+            }
+
+            @media (max-width: 360px) {
+                .modal-content {
+                    padding: 34px 26px;
+                    width: calc(100vw - 38px);
+                    margin: 12px;
+                }
+                .modal-title { font-size: 1rem; }
+                .modal-message { font-size: 0.85rem; }
             }
         </style>`;
 
@@ -727,18 +829,7 @@ function showSuccessModal() {
 
     const modal = document.getElementById('successModal');
     modal.classList.add('show');
+
+    // auto close after 6 seconds
     setTimeout(() => closeSuccessModal(), 6000);
 }
-
-function closeSuccessModal() {
-    const modal = document.getElementById('successModal');
-    if (!modal) return;
-    modal.classList.remove('show');
-    setTimeout(() => {
-        modal.remove();
-        const styles = document.getElementById('modalStyles');
-        if (styles) styles.remove();
-    }, 300);
-}
-
-window.closeSuccessModal = closeSuccessModal;

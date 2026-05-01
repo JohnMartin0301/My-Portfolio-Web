@@ -1004,6 +1004,15 @@ h2 {
     padding: 0 20px;
 }
 
+.contact-subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-top: -24px;
+    margin-bottom: 32px;
+    letter-spacing: 0.01em;
+}
+
 .form-group {
     margin-bottom: 24px;
 }
@@ -1313,6 +1322,12 @@ footer {
         padding: 0 65px; 
     }
 
+    .contact-subtitle {
+        font-size: 0.85rem;
+        margin-bottom: 24px;
+        padding: 0 10px;
+    }
+
     #contact .container { 
         padding: 0 15px; 
     }
@@ -1507,6 +1522,12 @@ footer {
         padding: 0 10px; 
     }
 
+    .contact-subtitle {
+        font-size: 0.70rem;
+        margin-bottom: 24px;
+        padding: 0 10px;
+    }
+
     #contact .container { 
         padding: 0 30px; 
     }
@@ -1565,7 +1586,7 @@ footer {
     }
 
     .skill-icon span {
-        font-size: 10px;
+        font-size: 8px;
     }
 }
 
