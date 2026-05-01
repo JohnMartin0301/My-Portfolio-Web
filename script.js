@@ -11,24 +11,55 @@
     const MAX_DIST   = 160;
     const SPEED      = 0.22;
 
+    // ── enhancement config ──
+    const PULSE_INTERVAL_MIN = 4000;
+    const PULSE_INTERVAL_MAX = 9000;
+    const PING_INTERVAL_MIN  = 6000;
+    const PING_INTERVAL_MAX  = 14000;
+    const MAX_ACTIVE_PULSES  = 2;
+    const MAX_ACTIVE_PINGS   = 1;
+
+    // ── activity config (replaces CLOUD) ──
+    const ACTIVITY = { bias: 1.4 };
+
     function resize() {
-        W = canvas.width  = window.innerWidth;
-        H = canvas.height = window.innerHeight;
+        const dpr = window.devicePixelRatio || 1;
+        W = canvas.width  = window.innerWidth  * dpr;
+        H = canvas.height = window.innerHeight * dpr;
+        canvas.style.width  = window.innerWidth  + 'px';
+        canvas.style.height = window.innerHeight + 'px';
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(dpr, dpr);
     }
 
     function makeNode() {
         return {
-            x: Math.random() * W,
-            y: Math.random() * H,
+            x:  Math.random() * window.innerWidth,
+            y:  Math.random() * window.innerHeight,
             vx: (Math.random() - 0.5) * SPEED,
             vy: (Math.random() - 0.5) * SPEED,
-            r: Math.random() * 1.4 + 0.6
+            r:  Math.random() * 1.4 + 0.6
         };
     }
 
     function buildNodes() {
-        nodes = Array.from({ length: NODE_COUNT }, makeNode);
+        const count = window.innerWidth < 480 ? 22
+                    : window.innerWidth < 768 ? 28
+                    : NODE_COUNT;
+        nodes = Array.from({ length: count }, makeNode);
     }
+
+    // ── enhancement state ──
+    let pulses = [];
+    let pings  = [];
+    let nextPulseAt = Date.now() + PULSE_INTERVAL_MIN + Math.random() * (PULSE_INTERVAL_MAX - PULSE_INTERVAL_MIN);
+    let nextPingAt  = Date.now() + PING_INTERVAL_MIN  + Math.random() * (PING_INTERVAL_MAX  - PING_INTERVAL_MIN);
+
+    // ── infrastructure activity state ──
+    let healthChecks = [];
+    let statusBlinks = [];
+    let nextHealthAt = Date.now() + 8000  + Math.random() * 7000;
+    let nextBlinkAt  = Date.now() + 3000  + Math.random() * 4000;
 
     function getColors() {
         const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
@@ -40,16 +71,113 @@
         };
     }
 
-    function draw() {
-        ctx.clearRect(0, 0, W, H);
+    // ── center-bias helper (replaces cloudWeight) ──
+    function centerBias(x, y) {
+        const dx = (x - window.innerWidth  * 0.5) / (window.innerWidth  * 0.5);
+        const dy = (y - window.innerHeight * 0.5) / (window.innerHeight * 0.5);
+        return Math.max(0, 1 - Math.sqrt(dx * dx + dy * dy));
+    }
+
+    function spawnPulse() {
+        if (pulses.length >= MAX_ACTIVE_PULSES) return;
+        let idx = 0;
+        let bestScore = -1;
+        const candidates = 6;
+        for (let i = 0; i < candidates; i++) {
+            const k     = Math.floor(Math.random() * nodes.length);
+            const w     = centerBias(nodes[k].x, nodes[k].y);
+            const score = Math.random() + w * (ACTIVITY.bias - 1);
+            if (score > bestScore) {
+                bestScore = score;
+                idx = k;
+            }
+        }
+        pulses.push({
+            idx,
+            r:     0,
+            maxR:  18 + Math.random() * 10,
+            life:  0,
+            speed: 0.006 + Math.random() * 0.004,
+        });
+    }
+
+    function spawnPing() {
+        if (pings.length >= MAX_ACTIVE_PINGS) return;
+        let ai = 0;
+        let bestScore = -1;
+        for (let i = 0; i < 6; i++) {
+            const k     = Math.floor(Math.random() * nodes.length);
+            const w     = centerBias(nodes[k].x, nodes[k].y);
+            const score = Math.random() + w * (ACTIVITY.bias - 1);
+            if (score > bestScore) {
+                bestScore = score;
+                ai = k;
+            }
+        }
+        const maxDist = window.innerWidth < 480 ? 100
+                      : window.innerWidth < 768 ? 130
+                      : MAX_DIST;
+        let bi = -1;
+        let bestDist = Infinity;
+        for (let k = 0; k < nodes.length; k++) {
+            if (k === ai) continue;
+            const dx = nodes[ai].x - nodes[k].x;
+            const dy = nodes[ai].y - nodes[k].y;
+            const d  = Math.sqrt(dx * dx + dy * dy);
+            if (d < maxDist && d < bestDist) {
+                bestDist = d;
+                bi = k;
+            }
+        }
+        if (bi === -1) return;
+        pings.push({
+            ai, bi,
+            t:     0,
+            speed: 0.008 + Math.random() * 0.005,
+            life:  1,
+        });
+    }
+
+    // ── health check sweep (faint line brightens between two nodes) ──
+    function spawnHealthCheck() {
+        if (healthChecks.length >= 2) return;
+        const ai = Math.floor(Math.random() * nodes.length);
+        let bi = -1, bestDist = Infinity;
+        const maxD = window.innerWidth < 768 ? 120 : MAX_DIST;
+        for (let k = 0; k < nodes.length; k++) {
+            if (k === ai) continue;
+            const dx = nodes[ai].x - nodes[k].x;
+            const dy = nodes[ai].y - nodes[k].y;
+            const d  = Math.sqrt(dx * dx + dy * dy);
+            if (d < maxD && d < bestDist) { bestDist = d; bi = k; }
+        }
+        if (bi === -1) return;
+        healthChecks.push({ ai, bi, life: 1.0 });
+    }
+
+    // ── status blink (node dims briefly, like a background process) ──
+    function spawnStatusBlink() {
+        if (statusBlinks.length >= 3) return;
+        const idx = Math.floor(Math.random() * nodes.length);
+        statusBlinks.push({ idx, life: 1.0, speed: 0.028 + Math.random() * 0.018 });
+    }
+
+    function draw(ts) {
+        ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
         const { node, line } = getColors();
 
+        const maxDist = window.innerWidth < 480 ? 100
+                      : window.innerWidth < 768 ? 130
+                      : MAX_DIST;
+
+        // ── draw nodes and connections ──
         for (let i = 0; i < nodes.length; i++) {
             const n = nodes[i];
             n.x += n.vx;
             n.y += n.vy;
-            if (n.x < 0 || n.x > W) n.vx *= -1;
-            if (n.y < 0 || n.y > H) n.vy *= -1;
+            if (n.x < 0 || n.x > window.innerWidth)  n.vx *= -1;
+            if (n.y < 0 || n.y > window.innerHeight)  n.vy *= -1;
 
             ctx.beginPath();
             ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
@@ -61,8 +189,8 @@
                 const dx = n.x - m.x;
                 const dy = n.y - m.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < MAX_DIST) {
-                    const alpha = 1 - dist / MAX_DIST;
+                if (dist < maxDist) {
+                    const alpha = 1 - dist / maxDist;
                     ctx.beginPath();
                     ctx.moveTo(n.x, n.y);
                     ctx.lineTo(m.x, m.y);
@@ -72,6 +200,121 @@
                 }
             }
         }
+
+        // ── spawn timers ──
+        const now = Date.now();
+        if (now >= nextPulseAt) {
+            spawnPulse();
+            nextPulseAt = now + PULSE_INTERVAL_MIN + Math.random() * (PULSE_INTERVAL_MAX - PULSE_INTERVAL_MIN);
+        }
+        if (now >= nextPingAt) {
+            spawnPing();
+            nextPingAt = now + PING_INTERVAL_MIN + Math.random() * (PING_INTERVAL_MAX - PING_INTERVAL_MIN);
+        }
+        if (now >= nextHealthAt) {
+            spawnHealthCheck();
+            nextHealthAt = now + 9000 + Math.random() * 8000;
+        }
+        if (now >= nextBlinkAt) {
+            spawnStatusBlink();
+            nextBlinkAt = now + 2500 + Math.random() * 3500;
+        }
+
+        const isDark  = document.documentElement.getAttribute('data-theme') !== 'light';
+        const accentR = isDark ? '59,130,246' : '37,99,235';
+
+        // ── draw node pulses (expanding ring glow) ──
+        pulses = pulses.filter(p => p.life < 1);
+        pulses.forEach(p => {
+            p.life += p.speed;
+            p.r = p.maxR * p.life;
+            const n        = nodes[p.idx];
+            const alpha    = (1 - p.life) * 0.18;
+            const dotAlpha = (1 - p.life) * 0.35;
+
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, p.r, 0, Math.PI * 2);
+            ctx.strokeStyle = `rgba(${accentR},${alpha.toFixed(3)})`;
+            ctx.lineWidth   = 1;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, 3 * (1 - p.life * 0.5), 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${accentR},${dotAlpha.toFixed(3)})`;
+            ctx.fill();
+        });
+
+        // ── draw connection pings (dot travelling along edge) ──
+        pings = pings.filter(p => p.life > 0);
+        pings.forEach(p => {
+            const a = nodes[p.ai];
+            const b = nodes[p.bi];
+
+            if (p.t < 1) {
+                p.t += p.speed;
+                if (p.t > 1) p.t = 1;
+            } else {
+                p.life -= 0.04;
+            }
+
+            const x      = a.x + (b.x - a.x) * p.t;
+            const y      = a.y + (b.y - a.y) * p.t;
+            const trailX = a.x + (b.x - a.x) * Math.max(0, p.t - 0.12);
+            const trailY = a.y + (b.y - a.y) * Math.max(0, p.t - 0.12);
+
+            const grad = ctx.createLinearGradient(trailX, trailY, x, y);
+            grad.addColorStop(0, `rgba(${accentR},0)`);
+            grad.addColorStop(1, `rgba(${accentR},${(p.life * 0.3).toFixed(3)})`);
+            ctx.beginPath();
+            ctx.moveTo(trailX, trailY);
+            ctx.lineTo(x, y);
+            ctx.strokeStyle = grad;
+            ctx.lineWidth   = 1.2;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(x, y, 2, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${accentR},${(p.life * 0.5).toFixed(3)})`;
+            ctx.fill();
+        });
+
+        // ── draw health check sweeps ──
+        healthChecks = healthChecks.filter(h => h.life > 0);
+        healthChecks.forEach(h => {
+            h.life -= 0.008;
+            const a     = nodes[h.ai];
+            const b     = nodes[h.bi];
+            const alpha = h.life * 0.13;
+
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(${accentR},${alpha.toFixed(3)})`;
+            ctx.lineWidth   = 0.9;
+            ctx.stroke();
+
+            [a, b].forEach(n => {
+                ctx.beginPath();
+                ctx.arc(n.x, n.y, 2.2, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(${accentR},${(h.life * 0.22).toFixed(3)})`;
+                ctx.fill();
+            });
+        });
+
+        // ── draw status blinks ──
+        statusBlinks = statusBlinks.filter(b => b.life > 0);
+        statusBlinks.forEach(b => {
+            b.life -= b.speed;
+            const n     = nodes[b.idx];
+            const curve = b.life < 0.5 ? b.life * 2 : (1 - b.life) * 2;
+            const alpha = curve * 0.20;
+
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r * 2.8, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${accentR},${alpha.toFixed(3)})`;
+            ctx.fill();
+        });
+
         animId = requestAnimationFrame(draw);
     }
 
@@ -81,7 +324,9 @@
 
     window.addEventListener('resize', () => {
         cancelAnimationFrame(animId);
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         resize();
+        buildNodes();
         draw();
     });
 })();
@@ -125,6 +370,7 @@ themeToggle.addEventListener('click', () => {
     updateThemeIcons(newTheme);
 });
 
+
 // ─────────────────────────────────────────
 // STATUS TOOLTIP — dot hover + mobile tap
 // ─────────────────────────────────────────
@@ -133,7 +379,6 @@ themeToggle.addEventListener('click', () => {
     const dot       = document.querySelector('.role-badge__dot');
     if (!roleBadge || !dot) return;
 
-    // uptime counter
     const startTime = Date.now();
 
     function formatUptime(ms) {
@@ -144,7 +389,6 @@ themeToggle.addEventListener('click', () => {
         return [h, m, sc].map(n => String(n).padStart(2, '0')).join(':');
     }
 
-    // simulated response time
     let baseLatency = 18;
 
     function getLatency() {
@@ -169,19 +413,18 @@ themeToggle.addEventListener('click', () => {
     setInterval(tick, 1000);
     tick();
 
-    // mobile tap toggle on dot only
     dot.addEventListener('click', (e) => {
-        e.stopPropagation(); // prevent bubbling to document
+        e.stopPropagation();
         roleBadge.classList.toggle('tooltip-active');
     });
 
-    // close when tapping anywhere else
     document.addEventListener('click', (e) => {
         if (!roleBadge.contains(e.target)) {
             roleBadge.classList.remove('tooltip-active');
         }
     });
 })();
+
 
 // ─────────────────────────────────────────
 // NAVBAR SCROLL SHADOW
@@ -272,7 +515,6 @@ filterBtns.forEach(btn => {
         const filter = btn.getAttribute('data-filter');
         const grid = document.getElementById('projectsGrid');
 
-        // Fade the whole grid out
         grid.classList.add('filtering');
 
         setTimeout(() => {
@@ -286,7 +528,6 @@ filterBtns.forEach(btn => {
                 }
             });
 
-            // Fade back in
             grid.classList.remove('filtering');
         }, 400);
     });

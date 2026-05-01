@@ -309,8 +309,7 @@ body {
 /* ── light mode overrides ── */
 [data-theme="light"] .tip-1 {
     background: rgba(255, 255, 255, 0.95);
-    border-color: var(--border-color);
-    border-left-color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.28);
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
@@ -626,9 +625,9 @@ h2 {
 ───────────────────────────────────────── */
 .skills {
     display: grid;
-    grid-template-columns: repeat(7, minmax(60px, 80px));
+    grid-template-columns: repeat(6, minmax(93px, 110px));
     grid-template-rows: repeat(2, 1fr);
-    gap: 17px;
+    row-gap: 25px;
     justify-content: center;
     margin-top: 20px;
     max-width: 450px;
@@ -647,21 +646,18 @@ h2 {
     color: var(--text-color);
 }
 
-.skill-icon .devicon-github-original {
-    color: var(--text-color) !important;
-}
-
-/* Dark mode — invert dark icons so they show on dark background */
+/* Dark mode — invert dark icons */
 .skill-icon img[alt="Flask"],
 .skill-icon img[alt="GitHub"],
 .skill-icon img[alt="Bash"] {
     filter: invert(1);
 }
 
-/* Light mode — revert back to original */
+/* Light mode — revert */
 [data-theme="light"] .skill-icon img[alt="Flask"],
 [data-theme="light"] .skill-icon img[alt="GitHub"],
-[data-theme="light"] .skill-icon img[alt="Bash"] {
+[data-theme="light"] .skill-icon img[alt="Bash"],
+[data-theme="light"] .skill-icon img[alt="Windows Server"] {
     filter: invert(0);
 }
 
@@ -672,7 +668,7 @@ h2 {
 
 .skill-icon span {
     margin-top: 8px;
-    font-size: 14px;
+    font-size: 12px;
     color: var(--text-color);
 }
 
@@ -1154,6 +1150,7 @@ footer {
 
     .nav-brand { 
         font-size: 1.3rem; 
+        margin-left: 30px;
     }
 
     .nav-links { 
@@ -1162,6 +1159,10 @@ footer {
 
     .nav-link { 
         font-size: 0.9rem; 
+    }
+
+    .theme-toggle {
+        margin-right: 22px;
     }
 
     .status-tooltip {
@@ -1233,9 +1234,8 @@ footer {
     }
 
     .skills {
-        grid-template-columns: repeat(7, minmax(61px, 76px));
+        grid-template-columns: repeat(6, minmax(84px, 104px));
         max-width: 420px;
-        gap: 10px;
     }
 
     .skill-icon { 
@@ -1243,12 +1243,12 @@ footer {
     }
 
     .skill-icon img {
-        width: 24px;
-        height: 24px
+        width: 30px;
+        height: 30px
     }
 
     .skill-icon span { 
-        font-size: 12px; 
+        font-size: 11px; 
     }
 
     #projects h2 { 
@@ -1310,7 +1310,7 @@ footer {
 
     .contact-form { 
         max-width: 600px; 
-        padding: 0 15px; 
+        padding: 0 65px; 
     }
 
     #contact .container { 
@@ -1363,7 +1363,8 @@ footer {
     }
 
     .nav-brand { 
-        font-size: 1.2rem; 
+        font-size: 1.2rem;
+        margin-left: 31px; 
     }
 
     .nav-links { 
@@ -1375,7 +1376,8 @@ footer {
     }
 
     .theme-toggle { 
-        padding: 6px; 
+        padding: 6px;
+        margin-right: 23px; 
     }
 
     .theme-toggle svg { 
@@ -1388,6 +1390,10 @@ footer {
 
     .header { 
         padding: 100px 0 40px; 
+    }
+
+    .project-filters {
+        gap: 5px;
     }
 
     .profile-info h1 { 
@@ -1420,9 +1426,9 @@ footer {
     }
 
     .skills {
-        grid-template-columns: repeat(7, minmax(50px, 65px));
+        grid-template-columns: repeat(6, minmax(71px, 91px));
         max-width: 300px;
-        gap: 10px;
+        
     }
 
     .skill-icon { 
@@ -1430,12 +1436,12 @@ footer {
     }
 
     .skill-icon img { 
-        width: 22px; 
-        height: 22px; 
+        width: 30px; 
+        height: 30px; 
     }
 
     .skill-icon span { 
-        font-size: 10px; 
+        font-size: 9px; 
         margin-top: 4px; 
     }
 
@@ -1502,7 +1508,7 @@ footer {
     }
 
     #contact .container { 
-        padding: 0 10px; 
+        padding: 0 30px; 
     }
 
     .form-group input, .form-group textarea { 
@@ -1525,8 +1531,16 @@ footer {
 }
 
 @media (max-width: 430px) {
+    .nav-brand {
+        margin-left: 31px;
+    }
+
+    .theme-toggle {
+        margin-right: 22px;
+    }
+
     .infra-chip { 
-        font-size: 0.43rem; 
+        font-size: 0.41rem; 
         padding: 2px 6px 2px 5px; 
     }
 
@@ -1537,9 +1551,8 @@ footer {
     }
 
     .skills {
-        grid-template-columns: repeat(7, minmax(41px, 56px));
+        grid-template-columns: repeat(6, minmax(62px, 82px));
         max-width: 260px;
-        gap: 10px;
     }
 
     .skill-icon {
@@ -1547,12 +1560,12 @@ footer {
     }
 
     .skill-icon img {
-        width: 20px;
-        height: 20px;
+        width: 25px;
+        height: 25px;
     }
 
     .skill-icon span {
-        font-size: 10px;
+        font-size: 8px;
     }
 }
 
@@ -1568,14 +1581,21 @@ footer {
         font-size: 0.8rem; 
     }
 
+    .nav-brand {
+        margin-left: 15px;
+    }
+
+    .theme-toggle {
+        margin-right: 9px;
+    }
+
     .profile-header {
         margin-bottom: 0;
     }
 
     .skills {
-        grid-template-columns: repeat(7, minmax(35px, 45px));
+        grid-template-columns: repeat(6, minmax(54px, 74px));
         max-width: 260px;
-        gap: 10px;
     }
 
     .skill-icon {
@@ -1583,12 +1603,12 @@ footer {
     }
 
     .skill-icon img {
-        width: 20px;
-        height: 20px;
+        width: 25px;
+        height: 25px;
     }
 
     .skill-icon span {
-        font-size: 9px;
+        font-size: 7px;
     }
 
     .profile-info h1 { 
