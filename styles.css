@@ -364,18 +364,18 @@ body {
     left: 0;
     right: 0;
     z-index: 1000;
-    backdrop-filter: blur(12px);
-    background: rgba(15, 15, 15, 0.88);
-    border-bottom: 1px solid transparent;
-    transition: border-color 0.3s ease;
+    background: transparent;
+    transition: background 0.3s ease;
 }
 
 .navbar.scrolled {
+    background: rgba(15, 15, 15, 0.88);
+    backdrop-filter: blur(12px);
     box-shadow: var(--navbar-shadow);
-    border-bottom-color: var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
-[data-theme="light"] .navbar {
+[data-theme="light"] .navbar.scrolled {
     background: rgba(255, 255, 255, 0.88);
 }
 
@@ -1092,7 +1092,6 @@ h2 {
 footer {
     text-align: center;
     padding: 25px 0;
-    border-top: 1px solid var(--border-color);
     color: var(--text-muted);
     position: relative;
     z-index: 1;
