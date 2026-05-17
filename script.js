@@ -533,6 +533,13 @@ filterBtns.forEach(btn => {
     });
 });
 
+// ── default filter on page load ──
+projectCards.forEach(card => {
+    if (card.getAttribute('data-category') !== 'personal') {
+        card.classList.add('hidden');
+    }
+});
+
 
 // ─────────────────────────────────────────
 // PROJECT CARD ANIMATION DELAYS
