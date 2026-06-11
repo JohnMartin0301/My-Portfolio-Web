@@ -625,12 +625,12 @@ h2 {
 ───────────────────────────────────────── */
 .skills {
     display: grid;
-    grid-template-columns: repeat(6, minmax(93px, 110px));
+    grid-template-columns: repeat(4, minmax(90px, 135px));
     grid-template-rows: repeat(2, 1fr);
     row-gap: 25px;
     justify-content: center;
     margin-top: 20px;
-    max-width: 450px;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
     width: 100%;
@@ -648,14 +648,12 @@ h2 {
 
 /* Dark mode — invert dark icons */
 .skill-icon img[alt="Flask"],
-.skill-icon img[alt="GitHub"],
 .skill-icon img[alt="Bash"] {
     filter: invert(1);
 }
 
 /* Light mode — revert */
 [data-theme="light"] .skill-icon img[alt="Flask"],
-[data-theme="light"] .skill-icon img[alt="GitHub"],
 [data-theme="light"] .skill-icon img[alt="Bash"],
 [data-theme="light"] .skill-icon img[alt="Windows Server"] {
     filter: invert(0);
@@ -1242,8 +1240,8 @@ footer {
     }
 
     .skills {
-        grid-template-columns: repeat(6, minmax(84px, 104px));
-        max-width: 420px;
+        grid-template-columns: repeat(4, minmax(84px, 104px));
+        max-width: 100%;
     }
 
     .skill-icon { 
@@ -1440,18 +1438,18 @@ footer {
     }
 
     .skills {
-        grid-template-columns: repeat(6, minmax(71px, 91px));
-        max-width: 300px;
+        grid-template-columns: repeat(4, minmax(80px, 107px));
+        max-width: 100%;
         
     }
 
     .skill-icon { 
-        font-size: 22px; 
+        font-size: 20px; 
     }
 
     .skill-icon img { 
-        width: 30px; 
-        height: 30px; 
+        width: 25px; 
+        height: 25px; 
     }
 
     .skill-icon span { 
@@ -1571,8 +1569,8 @@ footer {
     }
 
     .skills {
-        grid-template-columns: repeat(6, minmax(62px, 82px));
-        max-width: 260px;
+        grid-template-columns: repeat(4, minmax(60px, 92px));
+        max-width: 100%;
     }
 
     .skill-icon {
@@ -1614,8 +1612,8 @@ footer {
     }
 
     .skills {
-        grid-template-columns: repeat(6, minmax(54px, 74px));
-        max-width: 260px;
+        grid-template-columns: repeat(4, minmax(55px, 81px));
+        max-width: 100%;
     }
 
     .skill-icon {
