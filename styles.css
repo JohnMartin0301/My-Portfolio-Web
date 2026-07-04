@@ -390,6 +390,7 @@ body {
     display: inline-flex;
     align-items: baseline;
     gap: 1px;
+    margin-bottom: 10px;
 }
 
 .brand-j {
