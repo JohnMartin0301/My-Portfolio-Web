@@ -471,6 +471,11 @@ document.querySelectorAll('section').forEach(s => fadeObserver.observe(s));
     let isClickLocked = false;
     let clickLockTimer = null;
 
+    let signalBusy = false;
+    let pendingSignal = null;
+    let scrollSpyTimer = null;
+    const SCROLL_SPY_DEBOUNCE = 100;
+
     function getDotCenter(entry) {
         const dot = entry.querySelector('.exp-node__dot');
         const timelineRect = timeline.getBoundingClientRect();
@@ -516,9 +521,24 @@ document.querySelectorAll('section').forEach(s => fadeObserver.observe(s));
         signal.style.height = `${height}px`;
 
         const goingDown = toCenter.top > fromCenter.top;
+        signalBusy = true;
         signal.classList.remove('is-traveling-down', 'is-traveling-up');
         void signal.offsetWidth;
         signal.classList.add(goingDown ? 'is-traveling-down' : 'is-traveling-up');
+    }
+
+    if (signal) {
+        signal.addEventListener('animationend', () => {
+            signal.classList.remove('is-traveling-down', 'is-traveling-up');
+            signalBusy = false;
+            if (pendingSignal) {
+                const { from, to } = pendingSignal;
+                pendingSignal = null;
+                playSignal(from, to);
+            } else {
+                playArrivalPulse(entries[activeIndex]);
+            }
+        });
     }
 
     function playArrivalPulse(entry) {
@@ -549,8 +569,11 @@ document.querySelectorAll('section').forEach(s => fadeObserver.observe(s));
         // signal + arrival pulse only make sense when actually traveling
         // between two nodes (not on the very first paint)
         if (animate && changed && previousEntry) {
-            playSignal(previousEntry, entries[index]);
-            setTimeout(() => playArrivalPulse(entries[index]), 480);
+            if (signalBusy) {
+                pendingSignal = { from: previousEntry, to: entries[index] };
+            } else {
+                playSignal(previousEntry, entries[index]);
+            }
         }
 
         if (scrollLock) {
@@ -561,10 +584,14 @@ document.querySelectorAll('section').forEach(s => fadeObserver.observe(s));
     }
 
     entries.forEach((entry, i) => {
-        entry.addEventListener('click', () => setActive(i, { scrollLock: true }));
+        entry.addEventListener('click', () => {
+            clearTimeout(scrollSpyTimer);
+            setActive(i, { scrollLock: true });
+        });
         entry.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
+                clearTimeout(scrollSpyTimer);
                 setActive(i, { scrollLock: true });
             }
         });
@@ -580,7 +607,12 @@ document.querySelectorAll('section').forEach(s => fadeObserver.observe(s));
         });
         if (best) {
             const index = entries.indexOf(best.target);
-            if (index !== -1) setActive(index);
+            if (index === -1) return;
+
+            clearTimeout(scrollSpyTimer);
+            scrollSpyTimer = setTimeout(() => {
+                setActive(index);
+            }, SCROLL_SPY_DEBOUNCE);
         }
     }, {
         threshold: [0.25, 0.5, 0.75],

@@ -663,18 +663,32 @@ h2 {
     transform: scale(1.1);
 }
 
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 
 /* ----- EXPERIENCE SECTION ----- */
 #experience {
-    padding: 80px 0;
+    padding: 96px 0;
+}
+
+#experience h2 {
+    margin-bottom: 56px;
 }
 
 .exp-timeline {
     --exp-rail: var(--content-pad-x);
-    --exp-pad-y: 16px;     
-    --exp-pad-x: 18px;     
-    --exp-dot: 8px;        
-    --exp-line-x: 7px;    
+    --exp-dot: 8px;
+    --exp-line-x: 7px;
+    --exp-gap: 72px;
     position: relative;
     max-width: var(--content-max-width);
     margin: 0 auto;
@@ -724,7 +738,6 @@ h2 {
     }
 }
 
-/* traveling "signal" streak along the spine between old/new active node */
 .exp-signal {
     position: absolute;
     left: var(--exp-line-x);
@@ -748,7 +761,7 @@ h2 {
 
 @keyframes exp-signal-down {
     0% { 
-        background-position: 0 200%;  
+        background-position: 0 200%; 
         opacity: 0; 
     }
 
@@ -781,12 +794,11 @@ h2 {
     }
 
     100% { 
-        background-position: 0 200%;  
+        background-position: 0 200%; 
         opacity: 0; 
     }
 }
 
-/* arrival "pulse burst" at the destination node */
 .exp-arrival-pulse {
     position: absolute;
     left: var(--exp-line-x);
@@ -821,11 +833,13 @@ h2 {
     }
 }
 
+/* ── Entry: spacing-based separation, no box ── */
 .exp-entry {
     position: relative;
-    margin-bottom: 28px;
+    margin-bottom: var(--exp-gap);
     cursor: pointer;
-    border-radius: 8px;
+    border-radius: 4px;
+    transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 .exp-entry:last-child { 
@@ -834,14 +848,15 @@ h2 {
 
 .exp-entry:focus-visible {
     outline: 2px solid var(--accent-color);
-    outline-offset: 4px;
+    outline-offset: 6px;
 }
 
 .exp-node {
     position: absolute;
     left: calc(var(--exp-line-x) - var(--exp-rail));
-    top: calc(var(--exp-pad-y) + 4px);
+    top: 9px;
     transform: translateX(-50%);
+    z-index: 2;
 }
 
 .exp-node__dot {
@@ -850,30 +865,25 @@ h2 {
     height: var(--exp-dot);
     border-radius: 50%;
     background: var(--border-color);
-    transition: background 0.3s ease;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
+.exp-entry.is-active .exp-node__dot {
+    background: var(--accent-color);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+/* ── Card: content block, no border/background/shadow ── */
 .exp-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: var(--exp-pad-y) var(--exp-pad-x);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.exp-card:hover { 
-    border-color: rgba(59, 130, 246, 0.35); 
-}
-
-.exp-entry.is-active .exp-card {
-    border-color: var(--accent-color);
-    box-shadow: inset 2px 0 0 0 var(--accent-color);
+    position: relative;
+    padding-left: 18px;
+    transition: opacity 0.3s ease;
 }
 
 .exp-status {
     display: inline-flex;
     align-items: center;
-    gap: 6px;              
+    gap: 6px;
     font-family: 'Courier New', monospace;
     font-size: 0.63rem;
     font-weight: 700;
@@ -881,7 +891,7 @@ h2 {
     line-height: 1;
     padding: 3px 8px;
     border-radius: 4px;
-    margin-bottom: 8px;
+    margin-bottom: 14px;
 }
 
 .exp-status--active {
@@ -899,8 +909,8 @@ h2 {
     animation: exp-pulse 2.4s ease infinite;
 }
 
-.exp-status__text {
-    line-height: 1;         
+.exp-status__text { 
+    line-height: 1; 
 }
 
 .exp-status--archived {
@@ -911,29 +921,36 @@ h2 {
 
 .exp-status--archived .exp-status__dot {
     background: #64748B;
+    animation: none;
+    box-shadow: none;
 }
 
 .exp-card__title {
-    font-size: 0.98rem;
+    font-size: 1.05rem;
     font-weight: 700;
     color: var(--text-color);
-    margin: 0 0 2px;
+    margin: 0 0 4px;
     line-height: 1.3;
+    transition: color 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.exp-entry.is-active .exp-card__title { 
+    color: var(--accent-color); 
 }
 
 .exp-card__sub {
     display: block;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     color: var(--text-muted);
-    margin-bottom: 10px;
+    margin-bottom: 22px;
     line-height: 1.4;
 }
 
 .exp-card__meta {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    margin-bottom: 10px;
+    gap: 10px;
+    margin-bottom: 22px;
 }
 
 .exp-card__company {
@@ -942,6 +959,7 @@ h2 {
     color: var(--chip-text);
     letter-spacing: 0.01em;
     line-height: 1.4;
+    margin-bottom: -5px;
 }
 
 .exp-card__details {
@@ -949,7 +967,6 @@ h2 {
     flex-wrap: wrap;
     align-items: center;
     gap: 9px;
-    row-gap: 6px;
 }
 
 .exp-card__detail {
@@ -967,15 +984,16 @@ h2 {
     flex-shrink: 0;
 }
 
-.exp-card__detail--date {
-    letter-spacing: 0.01em;
+.exp-card__detail--date { 
+    letter-spacing: 0.01em; 
 }
 
 .exp-card__desc {
-    font-size: 0.87rem;
+    font-size: 0.88rem;
     color: var(--text-muted);
-    line-height: 1.55;
-    margin: 0;
+    line-height: 1.6;
+    margin: 0 0 20px;
+    max-width: 60ch;
     text-align: justify;
     text-justify: inter-word;
 }
@@ -985,15 +1003,14 @@ h2 {
     flex-wrap: nowrap;
     align-items: center;
     gap: 8px;
-    margin-top: 12px;
     overflow-x: auto;
     overflow-y: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
 
-.exp-card__tags::-webkit-scrollbar {
-    display: none;
+.exp-card__tags::-webkit-scrollbar { 
+    display: none; 
 }
 
 .exp-card__tags .tech-tag {
@@ -1010,173 +1027,12 @@ h2 {
     .exp-status__dot,
     .exp-indicator,
     .exp-signal,
-    .exp-arrival-pulse {
+    .exp-arrival-pulse,
+    .exp-entry {
         animation: none;
-    }
-    .exp-indicator { 
-        transition: none; 
+        transition: none;
     }
 }
-
-/* ── Responsive ──
-   Only rail/padding change — --exp-line-x stays fixed, so node/spine
-   alignment can never drift regardless of breakpoint. */
-@media (max-width: 768px) {
-    .exp-timeline {
-        --exp-rail: 18px;
-        --exp-pad-y: 14px;
-        --exp-pad-x: 16px;
-    }
-    .exp-card__title { 
-        font-size: 0.92rem; 
-    }
-}
-
-@media (max-width: 480px) {
-
-    .exp-timeline {
-        --exp-rail: 20px;
-        --exp-pad-y: 12px;
-        --exp-pad-x: 14px;
-    }
-
-    .exp-card {
-        border-radius: 7px;
-    }
-
-    .exp-card__title {
-        font-size: .88rem;
-    }
-
-    .exp-card__sub {
-        font-size: .75rem;
-    }
-
-    .exp-card__company {
-        font-size: .84rem;
-    }
-
-    .exp-card__detail {
-        font-size: .73rem;
-    }
-
-    .exp-card__desc {
-        font-size: .75rem;
-        line-height: 1.6;
-    }
-
-    .exp-card__tags {
-        flex-wrap: nowrap;
-        gap: 6px;
-    }
-
-    .exp-card__tags .tech-tag {
-        font-size: .54rem;
-        padding: 2px 8px;
-    }
-}
-
-@media (max-width: 370px) {
-    .exp-card__tags {
-        gap: 5px;
-    }
-
-    .exp-card__tags .tech-tag {
-        font-size: .53rem;
-        padding: 2px 7px;
-    }
-}
-
-@media (max-width: 360px) {
-
-    .exp-timeline {
-        --exp-rail: 18px;
-        --exp-pad-y: 11px;
-        --exp-pad-x: 12px;
-    }
-
-    .exp-card {
-        border-radius: 6px;
-    }
-
-    .exp-status {
-        font-size: .56rem;
-        padding: 3px 6px;
-    }
-
-    .exp-status__dot {
-        width: 4px;
-        height: 4px;
-    }
-
-    .exp-card__title {
-        font-size: .83rem;
-    }
-
-    .exp-card__sub {
-        font-size: .71rem;
-    }
-
-    .exp-card__company {
-        font-size: .79rem;
-    }
-
-    .exp-card__detail {
-        font-size: .69rem;
-    }
-
-    .exp-card__desc {
-        font-size: .7rem;
-        line-height: 1.55;
-    }
-
-    .exp-card__tags {
-        gap: 5px;
-    }
-
-    .exp-card__tags .tech-tag {
-        font-size: .53rem;
-        padding: 2px 7px;
-    }
-}
-
-@media (max-width: 280px) {
-    .exp-card__tags {
-        gap: 3px;
-    }
-
-    .exp-card__tags .tech-tag {
-        font-size: .34rem;
-        padding: 2px 7px;
-    }
-}
-
-
-/* ----- ANIMATIONS ----- */
-@keyframes fadeInUp {
-    from { 
-        opacity: 0; transform: translateY(10px); 
-    }
-
-    to { 
-        opacity: 1; transform: translateY(0); 
-    }
-}
-
-@keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { 
-        transform: translateY(0) rotate(45deg); 
-    }
-
-    40% { 
-        transform: translateY(-8px) rotate(45deg); 
-    }
-
-    60% { 
-        transform: translateY(-4px) rotate(45deg); 
-    }
-}
-
 
 /* ----- PROJECTS SECTION ----- */
 #projects {
@@ -1547,6 +1403,11 @@ footer {
         padding: 0 15px; 
     }
 
+    .exp-timeline { 
+        --exp-gap: 60px; 
+    }
+
+
     .projects-grid {
         gap: 18px;
         max-width: 600px;
@@ -1592,6 +1453,7 @@ footer {
     .nav-brand { 
         font-size: 1.3rem; 
         margin-left: 30px;
+        margin-bottom: 7px;
     }
 
     .nav-links { 
@@ -1690,6 +1552,30 @@ footer {
 
     .skill-icon span { 
         font-size: 11px; 
+    }
+
+    .exp-timeline {
+        --exp-rail: 18px;
+        --exp-gap: 52px;
+    }
+    .exp-card { 
+        padding-left: 16px; 
+    }
+
+    .exp-card__title { 
+        font-size: 0.98rem; 
+    }
+
+    .exp-card__sub { 
+        margin-bottom: 18px; 
+    }
+
+    .exp-card__meta { 
+        margin-bottom: 18px; 
+    }
+
+    .exp-card__desc { 
+        margin-bottom: 16px; 
     }
 
     #projects h2 { 
@@ -1810,15 +1696,16 @@ footer {
 
     .nav-brand { 
         font-size: 1.2rem;
-        margin-left: 31px; 
+        margin-left: 31px;
+        margin-bottom: 7px; 
     }
 
     .nav-links { 
-        gap: 15px; 
+        gap: 10px; 
     }
 
     .nav-link { 
-        font-size: 0.85rem; 
+        font-size: 0.75rem; 
     }
 
     .theme-toggle { 
@@ -1874,7 +1761,6 @@ footer {
     .skills {
         grid-template-columns: repeat(4, minmax(80px, 107px));
         max-width: 100%;
-        
     }
 
     .skill-icon { 
@@ -1889,6 +1775,46 @@ footer {
     .skill-icon span { 
         font-size: 9px; 
         margin-top: 4px; 
+    }
+
+    .exp-timeline {
+        --exp-rail: 20px;
+        --exp-gap: 44px;
+    }
+
+    .exp-card { 
+        padding-left: 14px; 
+    }
+
+    .exp-card__title { 
+        font-size: 0.92rem; 
+    }
+
+    .exp-card__sub { 
+        font-size: 0.76rem; 
+        margin-bottom: 16px; 
+    }
+
+    .exp-card__company { 
+        font-size: 0.84rem; 
+    }
+
+    .exp-card__detail { 
+        font-size: 0.73rem; 
+    }
+
+    .exp-card__desc { 
+        font-size: 0.82rem; 
+        margin-bottom: 14px; 
+    }
+
+    .exp-card__tags { 
+        gap: 6px; 
+    }
+
+    .exp-card__tags .tech-tag {
+        font-size: 0.66rem;
+        padding: 3px 8px;
     }
 
     .projects-grid {
@@ -1982,10 +1908,12 @@ footer {
     }
 }
 
+
 /* ----- RESPONSIVE: SMALL (≤ 430px) -----*/
 @media (max-width: 430px) {
     .nav-brand {
         margin-left: 31px;
+        margin-bottom: 7px;
     }
 
     .theme-toggle {
@@ -2020,6 +1948,55 @@ footer {
     .skill-icon span {
         font-size: 8px;
     }
+
+    .exp-card__tags {
+        gap: 5px;
+    }
+
+    .exp-card__tags .tech-tag {
+        font-size: 0.62rem;
+        padding: 3px 7px;
+    }
+}
+
+
+/* ----- RESPONSIVE: SMALL (≤ 390px) -----*/
+
+@media (max-width: 390px) {
+    .nav-links { 
+        gap: 10px; 
+    }
+
+    .nav-link { 
+        font-size: 0.68rem; 
+    }
+
+    .nav-brand {
+        margin-left: 15px;
+        margin-bottom: 7px;
+    }
+
+    .exp-timeline { 
+        --exp-gap: 40px; 
+    }
+
+    .exp-card__title { 
+        font-size: 0.89rem; 
+    }
+
+    .exp-status { 
+        font-size: 0.58rem; 
+        padding: 3px 7px; 
+    }
+
+    .exp-card__tags {
+        gap: 6px;
+    }
+
+    .exp-card__tags .tech-tag {
+        font-size: 0.60rem;
+        padding: 2px 6px;
+    }
 }
 
 
@@ -2035,6 +2012,8 @@ footer {
 
     .nav-brand {
         margin-left: 15px;
+        font-size: 1rem;
+        margin-bottom: 5px;
     }
 
     .theme-toggle {
@@ -2073,6 +2052,46 @@ footer {
         margin-bottom: -10px;
     }
 
+    .exp-timeline {
+        --exp-rail: 18px;
+        --exp-gap: 36px;
+    }
+
+    .exp-card { 
+        padding-left: 12px; 
+    }
+
+    .exp-card__title { 
+        font-size: 0.86rem; 
+    }
+
+    .exp-card__sub { 
+        font-size: 0.73rem; 
+    }
+
+    .exp-card__company { 
+        font-size: 0.8rem; 
+    }
+
+    .exp-card__detail { 
+        font-size: 0.69rem; 
+    }
+
+    .exp-card__desc { 
+        font-size: 0.73rem; 
+        line-height: 1.55; 
+    }
+
+    .exp-card__tags {
+        gap: 3px;
+    }
+
+    .exp-card__tags .tech-tag {
+        font-size: 0.60rem;
+        padding: 2px 6px;
+    }
+
+
     footer { 
         font-size: 0.8rem; 
     }
@@ -2090,6 +2109,25 @@ footer {
     }
 }
 
+@media (max-width: 320px) {
+    .exp-card__title { 
+        font-size: 0.83rem; 
+    }
+
+    .exp-card__desc { 
+        font-size: 0.68rem; 
+    }
+
+    .exp-card__tags { 
+        gap: 3px; 
+    }
+
+    .exp-card__tags .tech-tag {
+        font-size: 0.50rem;
+        padding: 2px 5px;
+    }
+}
+
 /* ----- RESPONSIVE: ULTRA SMALL (≤ 280px) ----- */
 @media (max-width: 280px) {
     .infra-chips {
@@ -2101,5 +2139,14 @@ footer {
         font-size: 0.40rem;
         padding: 2px 5px;
         gap: 3px;
+    }
+
+    .exp-card__tags {
+        gap: 3px;
+    }
+
+    .exp-card__tags .tech-tag {
+        font-size: 0.40rem;
+        padding: 2px 4px;
     }
 }
