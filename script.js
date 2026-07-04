@@ -1,6 +1,4 @@
-// ─────────────────────────────────────────
-// NETWORK CANVAS — ambient background
-// ─────────────────────────────────────────
+// ----- NETWORK CANVAS — ambient background ----- //
 (function initNetworkCanvas() {
     const canvas = document.getElementById('networkCanvas');
     if (!canvas) return;
@@ -332,13 +330,10 @@
 })();
 
 
-// ─────────────────────────────────────────
-// DOM REFERENCES
-// ─────────────────────────────────────────
+// ----- DOM REFERENCES ----- //
 const themeToggle     = document.getElementById('themeToggle');
 const sunIcon         = document.getElementById('sunIcon');
 const moonIcon        = document.getElementById('moonIcon');
-const scrollIndicator = document.querySelector('.profile-scroll');
 const headerSection   = document.querySelector('.header');
 const projectsSection = document.querySelector('#projects');
 const contactForm     = document.getElementById('contactForm');
@@ -346,9 +341,7 @@ const filterBtns      = document.querySelectorAll('.filter-btn');
 const projectCards    = document.querySelectorAll('.project-card');
 
 
-// ─────────────────────────────────────────
-// THEME TOGGLE
-// ─────────────────────────────────────────
+// ----- THEME TOGGLE ----- //
 document.documentElement.setAttribute('data-theme', 'dark');
 
 function updateThemeIcons(theme) {
@@ -371,9 +364,7 @@ themeToggle.addEventListener('click', () => {
 });
 
 
-// ─────────────────────────────────────────
-// STATUS TOOLTIP — dot hover + mobile tap
-// ─────────────────────────────────────────
+// ----- STATUS TOOLTIP — dot hover + mobile tap ----- //
 (function initStatusTooltip() {
     const roleBadge = document.getElementById('roleBadge');
     const dot       = document.querySelector('.role-badge__dot');
@@ -426,41 +417,14 @@ themeToggle.addEventListener('click', () => {
 })();
 
 
-// ─────────────────────────────────────────
-// NAVBAR SCROLL SHADOW
-// ─────────────────────────────────────────
+// ----- NAVBAR SCROLL SHADOW----- //
 window.addEventListener('scroll', function () {
     const navbar = document.querySelector('.navbar');
     navbar.classList.toggle('scrolled', window.scrollY > 0);
 });
 
 
-// ─────────────────────────────────────────
-// SCROLL INDICATOR — show/hide
-// ─────────────────────────────────────────
-if (scrollIndicator) {
-    scrollIndicator.addEventListener('click', () => {
-        scrollIndicator.classList.add('hidden');
-    });
-}
-
-const scrollObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.target === headerSection) {
-            if (entry.isIntersecting) scrollIndicator.classList.remove('hidden');
-        } else if (entry.target === projectsSection) {
-            if (entry.isIntersecting) scrollIndicator.classList.add('hidden');
-        }
-    });
-}, { threshold: 0.3 });
-
-scrollObserver.observe(headerSection);
-scrollObserver.observe(projectsSection);
-
-
-// ─────────────────────────────────────────
-// SMOOTH SCROLL + PARALLAX
-// ─────────────────────────────────────────
+// ----- SMOOTH SCROLL + PARALLAX ----- //
 let isNavigatingHome = false;
 
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -481,20 +445,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const header   = document.querySelector('.header');
-    if (header && !isNavigatingHome) {
-        header.style.transform = scrolled === 0
-            ? 'translateY(0px)'
-            : `translateY(${scrolled * 0.15}px)`;
-    }
-});
 
-
-// ─────────────────────────────────────────
-// SECTION FADE-IN OBSERVER
-// ─────────────────────────────────────────
+// ----- SECTION FADE-IN OBSERVER ----- //
 const fadeObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) entry.target.classList.add('visible');
@@ -504,9 +456,156 @@ const fadeObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('section').forEach(s => fadeObserver.observe(s));
 
 
-// ─────────────────────────────────────────
-// PROJECT FILTERING
-// ─────────────────────────────────────────
+// ----- EXPERIENCE TIMELINE — indicator + signal + scrollspy ----- //
+(function initExperienceTimeline() {
+    const timeline     = document.getElementById('expTimeline');
+    const indicator    = document.getElementById('expIndicator');
+    const signal       = document.getElementById('expSignal');
+    const arrivalPulse = document.getElementById('expArrivalPulse');
+    if (!timeline || !indicator) return;
+
+    const entries = Array.from(timeline.querySelectorAll('.exp-entry'));
+    if (!entries.length) return;
+
+    let activeIndex = 0;
+    let isClickLocked = false;
+    let clickLockTimer = null;
+
+    function getDotCenter(entry) {
+        const dot = entry.querySelector('.exp-node__dot');
+        const timelineRect = timeline.getBoundingClientRect();
+        const dotRect = dot.getBoundingClientRect();
+        return {
+            top:  dotRect.top  - timelineRect.top  + dotRect.height / 2,
+            left: dotRect.left - timelineRect.left + dotRect.width  / 2
+        };
+    }
+
+    function positionIndicator(entry, animate = true) {
+        const center = getDotCenter(entry);
+        const top  = center.top  - indicator.offsetHeight / 2;
+        const left = center.left - indicator.offsetWidth  / 2;
+
+        if (!animate) indicator.style.transition = 'none';
+        indicator.style.top  = `${top}px`;
+        indicator.style.left = `${left}px`;
+        indicator.classList.add('is-ready');
+        if (!animate) {
+            void indicator.offsetHeight;
+            indicator.style.transition = '';
+        }
+    }
+
+    // Restarts a CSS animation on an element by toggling its class off/on
+    // via a forced reflow — needed because just re-adding the same class
+    // name doesn't retrigger the animation.
+    function replay(el, className) {
+        el.classList.remove(className);
+        void el.offsetWidth;
+        el.classList.add(className);
+    }
+
+    function playSignal(fromEntry, toEntry) {
+        if (!signal) return;
+        const fromCenter = getDotCenter(fromEntry);
+        const toCenter   = getDotCenter(toEntry);
+        const top    = Math.min(fromCenter.top, toCenter.top);
+        const height = Math.abs(toCenter.top - fromCenter.top);
+
+        signal.style.top    = `${top}px`;
+        signal.style.height = `${height}px`;
+
+        const goingDown = toCenter.top > fromCenter.top;
+        signal.classList.remove('is-traveling-down', 'is-traveling-up');
+        void signal.offsetWidth;
+        signal.classList.add(goingDown ? 'is-traveling-down' : 'is-traveling-up');
+    }
+
+    function playArrivalPulse(entry) {
+        if (!arrivalPulse) return;
+        const center = getDotCenter(entry);
+        arrivalPulse.style.top  = `${center.top}px`;
+        arrivalPulse.style.left = `${center.left}px`;
+        replay(arrivalPulse, 'is-bursting');
+    }
+
+    function setActive(index, { animate = true, scrollLock = false } = {}) {
+        const changed = index !== activeIndex;
+        const previousEntry = entries[activeIndex];
+
+        if (!changed && entries[index].classList.contains('is-active')) {
+            positionIndicator(entries[index], animate);
+            return;
+        }
+
+        activeIndex = index;
+        entries.forEach((entry, i) => {
+            entry.classList.toggle('is-active', i === index);
+            entry.setAttribute('aria-current', i === index ? 'true' : 'false');
+        });
+
+        positionIndicator(entries[index], animate);
+
+        // signal + arrival pulse only make sense when actually traveling
+        // between two nodes (not on the very first paint)
+        if (animate && changed && previousEntry) {
+            playSignal(previousEntry, entries[index]);
+            setTimeout(() => playArrivalPulse(entries[index]), 480);
+        }
+
+        if (scrollLock) {
+            isClickLocked = true;
+            clearTimeout(clickLockTimer);
+            clickLockTimer = setTimeout(() => { isClickLocked = false; }, 700);
+        }
+    }
+
+    entries.forEach((entry, i) => {
+        entry.addEventListener('click', () => setActive(i, { scrollLock: true }));
+        entry.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                setActive(i, { scrollLock: true });
+            }
+        });
+    });
+
+    const observer = new IntersectionObserver((visibleEntries) => {
+        if (isClickLocked) return;
+        let best = null;
+        visibleEntries.forEach((e) => {
+            if (e.isIntersecting && (!best || e.intersectionRatio > best.intersectionRatio)) {
+                best = e;
+            }
+        });
+        if (best) {
+            const index = entries.indexOf(best.target);
+            if (index !== -1) setActive(index);
+        }
+    }, {
+        threshold: [0.25, 0.5, 0.75],
+        rootMargin: '-40% 0px -40% 0px'
+    });
+
+    entries.forEach((entry) => observer.observe(entry));
+
+    setActive(0, { animate: false });
+
+    let resizeRaf = null;
+    window.addEventListener('resize', () => {
+        cancelAnimationFrame(resizeRaf);
+        resizeRaf = requestAnimationFrame(() => {
+            positionIndicator(entries[activeIndex], false);
+        });
+    });
+
+    window.addEventListener('load', () => {
+        positionIndicator(entries[activeIndex], false);
+    });
+})();
+
+
+// ----- PROJECT FILTERING ----- //
 filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
         filterBtns.forEach(b => b.classList.remove('active'));
@@ -533,7 +632,7 @@ filterBtns.forEach(btn => {
     });
 });
 
-// ── default filter on page load ──
+// ── Default filter on page load ──
 projectCards.forEach(card => {
     if (card.getAttribute('data-category') !== 'personal') {
         card.classList.add('hidden');
@@ -541,17 +640,13 @@ projectCards.forEach(card => {
 });
 
 
-// ─────────────────────────────────────────
-// PROJECT CARD ANIMATION DELAYS
-// ─────────────────────────────────────────
+// ----- PROJECT CARD ANIMATION DELAYS ----- //
 document.querySelectorAll('.project-card').forEach((card, index) => {
     card.style.animationDelay = `${index * 0.1}s`;
 });
 
 
-// ─────────────────────────────────────────
-// CONTACT FORM VALIDATION & SUBMISSION
-// ─────────────────────────────────────────
+// ----- CONTACT FORM VALIDATION & SUBMISSION ----- //
 contactForm.addEventListener('submit', (e) => {
     e.preventDefault();
     clearErrors();
@@ -642,9 +737,7 @@ function submitForm(name, email, message) {
 }
 
 
-// ─────────────────────────────────────────
-// SUCCESS MODAL
-// ─────────────────────────────────────────
+// ----- SUCCESS MODAL ----- //
 function closeSuccessModal() {
     const modal = document.getElementById('successModal');
     if (!modal) return;

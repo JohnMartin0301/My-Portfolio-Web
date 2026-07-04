@@ -21,7 +21,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/> 
     <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#5bbad5"> 
     <link rel="manifest" href="favicon_io/site.webmanifest">
-    <title>John Martin - Associate Software Engineer</title>
+    <title>John Martin - Software Engineer</title>
 </head>
 <body>
 
@@ -36,6 +36,7 @@
             </div>
             <div class="nav-links">
                 <a href="#header" class="nav-link">Home</a>
+                <a href="#experience" class="nav-link">Experience</a>
                 <a href="#projects" class="nav-link">Projects</a>
                 <a href="#contact" class="nav-link">Contact</a>
             </div>
@@ -49,6 +50,9 @@
             </button>
         </div>
     </nav>
+
+    <!-- End of Navigation-->
+
 
     <!-- Header Section -->
     <header class="header" id="header">
@@ -189,15 +193,105 @@
                         <span>Postman</span>
                     </div>
                 </div>
-
-                <div class="profile-scroll">
-                    <a href="#projects" class="scroll-indicator">
-                        <div class="scroll-arrow"></div>
-                    </a>
-                </div>
             </div>
         </div>
     </header>
+
+    <!-- End of Header Section -->
+
+    <!-- Experience Section -->
+    <section id="experience">
+        <div class="section-accent" aria-hidden="true"></div>
+        <div class="container">
+            <h2>Professional Experience</h2>
+
+            <div class="exp-timeline" id="expTimeline">
+                <div class="exp-spine" aria-hidden="true"></div>
+                <div class="exp-signal" id="expSignal" aria-hidden="true"></div>
+                <div class="exp-arrival-pulse" id="expArrivalPulse" aria-hidden="true"></div>
+                <div class="exp-indicator" id="expIndicator" aria-hidden="true"></div>
+
+                <!-- Current role -->
+                <div class="exp-entry" data-exp-index="0" tabindex="0" role="button" aria-label="Show Associate Software Engineer role">
+                    <div class="exp-node" aria-hidden="true">
+                        <span class="exp-node__dot"></span>
+                    </div>
+                    <div class="exp-card">
+                        <span class="exp-status exp-status--active">
+                            <span class="exp-status__dot"></span>
+                            <span class="exp-status__text">200 OK</span>
+                            <span class="exp-status__sep" aria-hidden="true">-</span>
+                            <span class="exp-status__text">ACTIVE</span>
+                        </span>
+                        <h3 class="exp-card__title">Associate Software Engineer</h3>
+                        <span class="exp-card__sub">App/Cloud Support · Windows Server Engineer</span>
+
+                        <div class="exp-card__meta">
+                            <span class="exp-card__company">Accenture</span>
+                            <div class="exp-card__details">
+                                <span class="exp-card__detail">San Nicolas</span>
+                                <span class="exp-card__sep" aria-hidden="true"></span>
+                                <span class="exp-card__detail">Hybrid</span>
+                                <span class="exp-card__sep" aria-hidden="true"></span>
+                                <span class="exp-card__detail exp-card__detail--date">Jan 2026 — Present</span>
+                            </div>
+                        </div>
+
+                        <p class="exp-card__desc">
+                            Build and provision Windows Server environments, configure infrastructure components, remediate security vulnerabilities, and handle infrastructure requests across the server build lifecycle.
+                        </p>
+                        <div class="exp-card__tags">
+                            <span class="tech-tag">Windows Server</span>
+                            <span class="tech-tag">Hyper-V</span>
+                            <span class="tech-tag">Active Directory</span>
+                            <span class="tech-tag">PowerShell</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Previous role -->
+                <div class="exp-entry" data-exp-index="1" tabindex="0" role="button" aria-label="Show Software Engineering Intern role">
+                    <div class="exp-node" aria-hidden="true">
+                        <span class="exp-node__dot"></span>
+                    </div>
+                    <div class="exp-card">
+                        <span class="exp-status exp-status--archived">
+                            <span class="exp-status__dot"></span>
+                            <span class="exp-status__text">201 Created</span>
+                            <span class="exp-status__sep" aria-hidden="true">-</span>
+                            <span class="exp-status__text">COMPLETED</span>
+                        </span>
+                        <h3 class="exp-card__title">Software Engineering Intern</h3>
+                        <span class="exp-card__sub">Python Developer · Automation</span>
+
+                        <div class="exp-card__meta">
+                            <span class="exp-card__company">National Bureau of Investigation (NBI)</span>
+                            <div class="exp-card__details">
+                                <span class="exp-card__detail">Laoag</span>
+                                <span class="exp-card__sep" aria-hidden="true"></span>
+                                <span class="exp-card__detail">On-site</span>
+                                <span class="exp-card__sep" aria-hidden="true"></span>
+                                <span class="exp-card__detail exp-card__detail--date">Jun 2024 — Jul 2024</span>
+                            </div>
+                        </div>
+
+                        <p class="exp-card__desc">
+                            Developed a Python-based Warrant Searcher application with OCR that reduced document retrieval time from 20–30 minutes to under 30 seconds for investigators
+                        </p>
+                        <div class="exp-card__tags">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Tesseract OCR</span>
+                            <span class="tech-tag">Tkinter</span>
+                            <span class="tech-tag">Automation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- End of Experience section -->
+
 
     <!-- Projects Section -->
     <section id="projects">
@@ -361,10 +455,12 @@
                         <a href="https://github.com/JohnMartin0301/Automated-Attendance-System-using-QR-Code" class="project-link">View Project →</a>
                     </div>
                 </div>
-
-            </div><!-- end .projects-grid -->
+            </div>
         </div>
     </section>
+
+    <!-- End of Projects Section -->
+
 
     <!-- Contact Section -->
     <section id="contact">
@@ -405,6 +501,9 @@
             </div>
         </div>
     </section>
+
+    <!-- End of Contact Section -->
+
 
     <!-- Footer -->
     <footer>

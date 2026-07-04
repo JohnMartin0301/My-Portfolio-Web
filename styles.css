@@ -17,6 +17,8 @@
     --navbar-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
     --scrollbar-thumb: var(--accent-color);
     --scrollbar-track: var(--bg-color);
+    --content-max-width: 540px;
+    --content-pad-x: 20px;
     /* Cloud-inspired subtle palette */
     --cloud-line: rgba(59, 130, 246, 0.06);
     --cloud-glow-1: rgba(56, 189, 248, 0.04);
@@ -56,9 +58,7 @@ body {
     overflow-x: hidden;
 }
 
-/* ─────────────────────────────────────────
-   CUSTOM SCROLLBAR
-───────────────────────────────────────── */
+/* ----- CUSTOM SCROLLBAR ----- */
 
 ::-webkit-scrollbar {
     width: 5px;
@@ -83,9 +83,8 @@ body {
     scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
-/* ─────────────────────────────────────────
-   AMBIENT NETWORK CANVAS
-───────────────────────────────────────── */
+
+/* ----- AMBIENT NETWORK CANVAS ----- */
 #networkCanvas {
     position: fixed;
     inset: 0;
@@ -96,9 +95,8 @@ body {
     opacity: 1;
 }
 
-/* ─────────────────────────────────────────
-   CLOUD ACCENT SHAPES (hero section)
-───────────────────────────────────────── */
+
+/* ----- CLOUD ACCENT SHAPES (hero section) ----- */
 .cloud-accent {
     position: absolute;
     border-radius: 50%;
@@ -123,9 +121,8 @@ body {
     left: -120px;
 }
 
-/* ─────────────────────────────────────────
-   SECTION ACCENT LINES
-───────────────────────────────────────── */
+
+/* ----- SECTION ACCENT LINES ----- */
 .section-accent {
     width: 200px;
     height: 1px;
@@ -143,9 +140,8 @@ body {
     background: linear-gradient(270deg, var(--accent-color), transparent);
 }
 
-/* ─────────────────────────────────────────
-   SECTION ICON IN HEADINGS
-───────────────────────────────────────── */
+
+/* ----- SECTION ICON IN HEADINGS ----- */
 .section-icon {
     display: inline-flex;
     align-items: center;
@@ -160,9 +156,8 @@ body {
     fill: var(--accent-color);
 }
 
-/* ─────────────────────────────────────────
-   INFRA CHIPS
-───────────────────────────────────────── */
+
+/* ----- INFRA CHIPS ----- */
 .infra-chips {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -212,9 +207,8 @@ body {
     border-color: rgba(59, 130, 246, 0.35);
 }
 
-/* ─────────────────────────────────────────
-   ROLE BADGE
-───────────────────────────────────────── */
+
+/* ----- ROLE BADGE ----- */
 .role-badge {
     display: inline-flex;
     align-items: center;
@@ -293,7 +287,7 @@ body {
 .t-arrow { color: #22c55e; }
 .t-div  { color: #333333; }
 
-/* ── VARIANT 1: floating pill ── */
+/* ── floating pill ── */
 .tip-1 {
     display: flex;
     flex-direction: column;
@@ -344,9 +338,8 @@ body {
     }
 }
 
-/* ─────────────────────────────────────────
-   LAYOUT BASE
-───────────────────────────────────────── */
+
+/* ----- LAYOUT BASE ----- */
 .container {
     max-width: 800px;
     margin: 0 auto;
@@ -355,9 +348,8 @@ body {
     z-index: 1;
 }
 
-/* ─────────────────────────────────────────
-   NAVIGATION
-───────────────────────────────────────── */
+
+/* ----- NAVIGATION ----- */
 .navbar {
     position: fixed;
     top: 0;
@@ -383,10 +375,10 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 540px;
+    max-width: var(--content-max-width);
     margin: 0 auto;
     height: 70px;
-    padding: 0 20px;
+    padding: 0 var(--content-pad-x);
 }
 
 .nav-brand {
@@ -421,7 +413,7 @@ body {
 
 .nav-links {
     display: flex;
-    gap: 40px;
+    gap: 30px;
     align-items: center;
 }
 
@@ -458,9 +450,8 @@ body {
     display: block;
 }
 
-/* ─────────────────────────────────────────
-   SECTIONS
-───────────────────────────────────────── */
+
+/* ----- SECTIONS ----- */
 section {
     padding: 80px 0;
     opacity: 0;
@@ -485,9 +476,8 @@ h2 {
     gap: 4px;
 }
 
-/* ─────────────────────────────────────────
-   HEADER SECTION
-───────────────────────────────────────── */
+
+/* ----- HEADER SECTION -----*/
 .header {
     min-height: 100vh;
     display: flex;
@@ -620,9 +610,8 @@ h2 {
     margin-bottom: 35px;
 }
 
-/* ─────────────────────────────────────────
-   SKILLS GRID
-───────────────────────────────────────── */
+
+/* ----- SKILLS GRID ----- */
 .skills {
     display: grid;
     grid-template-columns: repeat(4, minmax(90px, 135px));
@@ -674,45 +663,496 @@ h2 {
     transform: scale(1.1);
 }
 
-/* ─────────────────────────────────────────
-   SCROLL INDICATOR
-───────────────────────────────────────── */
-.profile-scroll {
-    margin-top: 35px;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    opacity: 1;
-    transition: opacity 0.5s ease;
+
+/* ----- EXPERIENCE SECTION ----- */
+#experience {
+    padding: 80px 0;
 }
 
-.profile-scroll.hidden {
+.exp-timeline {
+    --exp-rail: var(--content-pad-x);
+    --exp-pad-y: 16px;     
+    --exp-pad-x: 18px;     
+    --exp-dot: 8px;        
+    --exp-line-x: 7px;    
+    position: relative;
+    max-width: var(--content-max-width);
+    margin: 0 auto;
+    padding-left: var(--exp-rail);
+    padding-right: var(--content-pad-x);
+}
+
+.exp-spine {
+    position: absolute;
+    left: var(--exp-line-x);
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(
+        to bottom,
+        var(--accent-color),
+        var(--border-color) 60%,
+        transparent
+    );
+    opacity: 0.3;
+}
+
+/* traveling indicator dot */
+.exp-indicator {
+    position: absolute;
+    width: calc(var(--exp-dot) + 3px);
+    height: calc(var(--exp-dot) + 3px);
+    border-radius: 50%;
+    background: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    animation: exp-pulse 2.4s ease infinite;
+    transition: top 0.55s cubic-bezier(0.65, 0, 0.35, 1),
+                left 0.55s cubic-bezier(0.65, 0, 0.35, 1);
+    pointer-events: none;
+    z-index: 3;
+    opacity: 0;
+}
+
+.exp-indicator.is-ready { opacity: 1; }
+
+@keyframes exp-pulse {
+    0%, 100% { 
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); 
+    }
+    50% { 
+        box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.06); 
+    }
+}
+
+/* traveling "signal" streak along the spine between old/new active node */
+.exp-signal {
+    position: absolute;
+    left: var(--exp-line-x);
+    width: 2px;
+    transform: translateX(-50%);
+    background: linear-gradient(to bottom, transparent, var(--accent-color), transparent);
+    background-size: 100% 200%;
+    border-radius: 2px;
     opacity: 0;
     pointer-events: none;
+    z-index: 1;
 }
 
-.scroll-indicator {
+.exp-signal.is-traveling-down { 
+    animation: exp-signal-down 0.55s linear; 
+}
+
+.exp-signal.is-traveling-up { 
+    animation: exp-signal-up 0.55s linear; 
+}
+
+@keyframes exp-signal-down {
+    0% { 
+        background-position: 0 200%;  
+        opacity: 0; 
+    }
+
+    15% { 
+        opacity: 0.9; 
+    }
+
+    85% { 
+        opacity: 0.9; 
+    }
+
+    100% { 
+        background-position: 0 -200%; 
+        opacity: 0; 
+    }
+}
+
+@keyframes exp-signal-up {
+    0% { 
+        background-position: 0 -200%; 
+        opacity: 0; 
+    }
+
+    15% { 
+        opacity: 0.9; 
+    }
+
+    85% { 
+        opacity: 0.9; 
+    }
+
+    100% { 
+        background-position: 0 200%;  
+        opacity: 0; 
+    }
+}
+
+/* arrival "pulse burst" at the destination node */
+.exp-arrival-pulse {
+    position: absolute;
+    left: var(--exp-line-x);
+    width: 1px;
+    height: 1px;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.exp-arrival-pulse.is-bursting {
+    animation: exp-arrival-burst 0.5s ease-out;
+}
+
+@keyframes exp-arrival-burst {
+    0% { 
+        box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.55); 
+        background: var(--accent-color); 
+        opacity: 1; 
+    }
+
+    70% { 
+        box-shadow: 0 0 0 12px rgba(59, 130, 246, 0); 
+        opacity: 0.6; 
+    }
+
+    100% { 
+        box-shadow: 0 0 0 14px rgba(59, 130, 246, 0); 
+        opacity: 0; 
+        background: transparent; 
+    }
+}
+
+.exp-entry {
+    position: relative;
+    margin-bottom: 28px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.exp-entry:last-child { 
+    margin-bottom: 0; 
+}
+
+.exp-entry:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 4px;
+}
+
+.exp-node {
+    position: absolute;
+    left: calc(var(--exp-line-x) - var(--exp-rail));
+    top: calc(var(--exp-pad-y) + 4px);
+    transform: translateX(-50%);
+}
+
+.exp-node__dot {
+    display: block;
+    width: var(--exp-dot);
+    height: var(--exp-dot);
+    border-radius: 50%;
+    background: var(--border-color);
+    transition: background 0.3s ease;
+}
+
+.exp-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: var(--exp-pad-y) var(--exp-pad-x);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.exp-card:hover { 
+    border-color: rgba(59, 130, 246, 0.35); 
+}
+
+.exp-entry.is-active .exp-card {
+    border-color: var(--accent-color);
+    box-shadow: inset 2px 0 0 0 var(--accent-color);
+}
+
+.exp-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;              
+    font-family: 'Courier New', monospace;
+    font-size: 0.63rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.exp-status--active {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.08);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.exp-status__dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #22c55e;
+    flex-shrink: 0;
+    animation: exp-pulse 2.4s ease infinite;
+}
+
+.exp-status__text {
+    line-height: 1;         
+}
+
+.exp-status--archived {
+    color: #64748B;
+    background: rgba(100, 116, 139, 0.08);
+    border: 1px solid rgba(100, 116, 139, 0.18);
+}
+
+.exp-status--archived .exp-status__dot {
+    background: #64748B;
+}
+
+.exp-card__title {
+    font-size: 0.98rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0 0 2px;
+    line-height: 1.3;
+}
+
+.exp-card__sub {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.exp-card__meta {
     display: flex;
     flex-direction: column;
+    gap: 5px;
+    margin-bottom: 10px;
+}
+
+.exp-card__company {
+    font-size: 0.86rem;
+    font-weight: 700;
+    color: var(--chip-text);
+    letter-spacing: 0.01em;
+    line-height: 1.4;
+}
+
+.exp-card__details {
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    text-decoration: none;
+    gap: 9px;
+    row-gap: 6px;
+}
+
+.exp-card__detail {
+    font-size: 0.76rem;
+    line-height: 1.4;
     color: var(--text-muted);
-    transition: color 0.3s ease;
 }
 
-.scroll-arrow {
-    width: 20px;
-    height: 20px;
-    border: 2px solid currentColor;
-    border-top: none;
-    border-left: none;
-    transform: rotate(45deg);
-    animation: bounce 2s infinite;
+.exp-card__sep {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    opacity: 0.6;
+    flex-shrink: 0;
 }
 
-/* ─────────────────────────────────────────
-   ANIMATIONS
-───────────────────────────────────────── */
+.exp-card__detail--date {
+    letter-spacing: 0.01em;
+}
+
+.exp-card__desc {
+    font-size: 0.87rem;
+    color: var(--text-muted);
+    line-height: 1.55;
+    margin: 0;
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.exp-card__tags {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.exp-card__tags::-webkit-scrollbar {
+    display: none;
+}
+
+.exp-card__tags .tech-tag {
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 4px 9px;
+    font-size: clamp(0.62rem, 0.9vw, 0.72rem);
+    line-height: 1.3;
+    border-width: 1px;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+    .exp-status__dot,
+    .exp-indicator,
+    .exp-signal,
+    .exp-arrival-pulse {
+        animation: none;
+    }
+    .exp-indicator { 
+        transition: none; 
+    }
+}
+
+/* ── Responsive ──
+   Only rail/padding change — --exp-line-x stays fixed, so node/spine
+   alignment can never drift regardless of breakpoint. */
+@media (max-width: 768px) {
+    .exp-timeline {
+        --exp-rail: 18px;
+        --exp-pad-y: 14px;
+        --exp-pad-x: 16px;
+    }
+    .exp-card__title { 
+        font-size: 0.92rem; 
+    }
+}
+
+@media (max-width: 480px) {
+
+    .exp-timeline {
+        --exp-rail: 20px;
+        --exp-pad-y: 12px;
+        --exp-pad-x: 14px;
+    }
+
+    .exp-card {
+        border-radius: 7px;
+    }
+
+    .exp-card__title {
+        font-size: .88rem;
+    }
+
+    .exp-card__sub {
+        font-size: .75rem;
+    }
+
+    .exp-card__company {
+        font-size: .84rem;
+    }
+
+    .exp-card__detail {
+        font-size: .73rem;
+    }
+
+    .exp-card__desc {
+        font-size: .75rem;
+        line-height: 1.6;
+    }
+
+    .exp-card__tags {
+        flex-wrap: nowrap;
+        gap: 6px;
+    }
+
+    .exp-card__tags .tech-tag {
+        font-size: .54rem;
+        padding: 2px 8px;
+    }
+}
+
+@media (max-width: 370px) {
+    .exp-card__tags {
+        gap: 5px;
+    }
+
+    .exp-card__tags .tech-tag {
+        font-size: .53rem;
+        padding: 2px 7px;
+    }
+}
+
+@media (max-width: 360px) {
+
+    .exp-timeline {
+        --exp-rail: 18px;
+        --exp-pad-y: 11px;
+        --exp-pad-x: 12px;
+    }
+
+    .exp-card {
+        border-radius: 6px;
+    }
+
+    .exp-status {
+        font-size: .56rem;
+        padding: 3px 6px;
+    }
+
+    .exp-status__dot {
+        width: 4px;
+        height: 4px;
+    }
+
+    .exp-card__title {
+        font-size: .83rem;
+    }
+
+    .exp-card__sub {
+        font-size: .71rem;
+    }
+
+    .exp-card__company {
+        font-size: .79rem;
+    }
+
+    .exp-card__detail {
+        font-size: .69rem;
+    }
+
+    .exp-card__desc {
+        font-size: .7rem;
+        line-height: 1.55;
+    }
+
+    .exp-card__tags {
+        gap: 5px;
+    }
+
+    .exp-card__tags .tech-tag {
+        font-size: .53rem;
+        padding: 2px 7px;
+    }
+}
+
+@media (max-width: 280px) {
+    .exp-card__tags {
+        gap: 3px;
+    }
+
+    .exp-card__tags .tech-tag {
+        font-size: .34rem;
+        padding: 2px 7px;
+    }
+}
+
+
+/* ----- ANIMATIONS ----- */
 @keyframes fadeInUp {
     from { 
         opacity: 0; transform: translateY(10px); 
@@ -737,9 +1177,8 @@ h2 {
     }
 }
 
-/* ─────────────────────────────────────────
-   PROJECTS SECTION
-───────────────────────────────────────── */
+
+/* ----- PROJECTS SECTION ----- */
 #projects {
     padding: 80px 0;
     overflow: visible;
@@ -987,9 +1426,8 @@ h2 {
     transform: rotate(180deg);
 }
 
-/* ─────────────────────────────────────────
-   CONTACT SECTION
-───────────────────────────────────────── */
+
+/* ----- CONTACT SECTION ----- */
 .contact-form {
     max-width: 550px;
     margin: 0 auto;
@@ -1084,9 +1522,8 @@ h2 {
     color: var(--accent-color);
 }
 
-/* ─────────────────────────────────────────
-   FOOTER
-───────────────────────────────────────── */
+
+/* ----- FOOTER ----- */
 footer {
     text-align: center;
     padding: 25px 0;
@@ -1095,9 +1532,8 @@ footer {
     z-index: 1;
 }
 
-/* ─────────────────────────────────────────
-   RESPONSIVE: TABLET (≤ 1024px)
-───────────────────────────────────────── */
+
+/* ----- RESPONSIVE: TABLET (≤ 1024px) ----- */
 @media (max-width: 1024px) {
     .navbar { 
         padding: 0 20px; 
@@ -1142,9 +1578,8 @@ footer {
     }
 }
 
-/* ─────────────────────────────────────────
-   RESPONSIVE: MOBILE (≤ 768px)
-───────────────────────────────────────── */
+
+/* ----- RESPONSIVE: MOBILE (≤ 768px) ----- */
 @media (max-width: 768px) {
     .container { 
         padding: 15px; 
@@ -1361,9 +1796,8 @@ footer {
     }
 }
 
-/* ─────────────────────────────────────────
-   RESPONSIVE: SMALL MOBILE (≤ 480px)
-───────────────────────────────────────── */
+
+/* ----- RESPONSIVE: SMALL MOBILE (≤ 480px) ----- */
 @media (max-width: 480px) {
     .navbar { 
         padding: 0 10px; 
@@ -1548,6 +1982,7 @@ footer {
     }
 }
 
+/* ----- RESPONSIVE: SMALL (≤ 430px) -----*/
 @media (max-width: 430px) {
     .nav-brand {
         margin-left: 31px;
@@ -1587,16 +2022,15 @@ footer {
     }
 }
 
-/* ─────────────────────────────────────────
-   RESPONSIVE: EXTRA SMALL (≤ 360px)
-───────────────────────────────────────── */
+
+/* ----- RESPONSIVE: EXTRA SMALL (≤ 360px) -----*/
 @media (max-width: 360px) {
     .nav-links { 
         gap: 10px; 
     }
 
     .nav-link { 
-        font-size: 0.8rem; 
+        font-size: 0.65rem; 
     }
 
     .nav-brand {
@@ -1656,9 +2090,7 @@ footer {
     }
 }
 
-/* ─────────────────────────────────────────
-   RESPONSIVE: ULTRA SMALL (≤ 280px)
-───────────────────────────────────────── */
+/* ----- RESPONSIVE: ULTRA SMALL (≤ 280px) ----- */
 @media (max-width: 280px) {
     .infra-chips {
         gap: 3px;
