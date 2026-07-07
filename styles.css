@@ -700,7 +700,7 @@ h2 {
 .exp-spine {
     position: absolute;
     left: var(--exp-line-x);
-    top: 8px;
+    top: 12px;
     bottom: 8px;
     width: 1px;
     background: linear-gradient(
@@ -855,7 +855,6 @@ h2 {
 .exp-node {
     position: absolute;
     left: calc(var(--exp-line-x) - var(--exp-rail));
-    top: 9px;
     transform: translateX(-50%);
     z-index: 2;
 }

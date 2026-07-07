@@ -486,6 +486,27 @@ document.querySelectorAll('section').forEach(s => fadeObserver.observe(s));
         };
     }
 
+    function alignNodeToBadge(entry) {
+        const node  = entry.querySelector('.exp-node');
+        const badge = entry.querySelector('.exp-status');
+        if (!node || !badge) return;
+
+        const entryRect = entry.getBoundingClientRect();
+        const badgeRect = badge.getBoundingClientRect();
+
+        // Vertical center of the badge, relative to the entry's top
+        const badgeCenter = (badgeRect.top - entryRect.top) + (badgeRect.height / 2);
+
+        // Offset the node so ITS center lands on that same point
+        const nodeTop = badgeCenter - (node.offsetHeight / 2);
+
+        node.style.top = `${nodeTop}px`;
+    }
+
+    function alignAllNodes() {
+        entries.forEach(alignNodeToBadge);
+    }
+
     function positionIndicator(entry, animate = true) {
         const center = getDotCenter(entry);
         const top  = center.top  - indicator.offsetHeight / 2;
@@ -622,6 +643,7 @@ document.querySelectorAll('section').forEach(s => fadeObserver.observe(s));
     entries.forEach((entry) => observer.observe(entry));
 
     setActive(0, { animate: false });
+    alignAllNodes();
 
     let resizeRaf = null;
     window.addEventListener('resize', () => {
@@ -633,6 +655,7 @@ document.querySelectorAll('section').forEach(s => fadeObserver.observe(s));
 
     window.addEventListener('load', () => {
         positionIndicator(entries[activeIndex], false);
+        alignAllNodes();
     });
 })();
 
