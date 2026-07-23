@@ -678,11 +678,11 @@ h2 {
 
 /* ----- EXPERIENCE SECTION ----- */
 #experience {
-    padding: 96px 0;
+    padding: 80px 0;
 }
 
 #experience h2 {
-    margin-bottom: 56px;
+    margin-bottom: 30px;
 }
 
 .exp-timeline {
@@ -959,7 +959,21 @@ h2 {
     color: var(--chip-text);
     letter-spacing: 0.01em;
     line-height: 1.4;
+}
+
+.exp-card__company-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     margin-bottom: -5px;
+}
+
+.exp-card__company-logo {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    object-fit: cover;
+    flex-shrink: 0;
 }
 
 .exp-card__details {
@@ -1036,7 +1050,6 @@ h2 {
 
 /* ----- PROJECTS SECTION ----- */
 #projects {
-    padding: 80px 0;
     overflow: visible;
     min-height: fit-content;
 }
@@ -1797,6 +1810,11 @@ footer {
 
     .exp-card__company { 
         font-size: 0.84rem; 
+    }
+
+    .exp-card__company-logo {
+        width: 15px;
+        height: 15px;
     }
 
     .exp-card__detail { 
