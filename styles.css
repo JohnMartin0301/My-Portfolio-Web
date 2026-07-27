@@ -682,14 +682,14 @@ h2 {
 }
 
 #experience h2 {
-    margin-bottom: 30px;
+    margin-bottom: 35px;
 }
 
 .exp-timeline {
     --exp-rail: var(--content-pad-x);
     --exp-dot: 8px;
     --exp-line-x: 7px;
-    --exp-gap: 72px;
+    --exp-gap: 60px;
     position: relative;
     max-width: var(--content-max-width);
     margin: 0 auto;
