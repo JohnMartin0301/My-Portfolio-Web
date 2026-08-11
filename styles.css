@@ -1767,6 +1767,12 @@ footer {
     }
 }
 
+@media (max-width: 600px) {
+    .location-item svg {
+        transform: translateY(0.5px);
+    }
+}
+
 
 /* ----- RESPONSIVE: SMALL MOBILE (≤ 480px) ----- */
 @media (max-width: 480px) {
@@ -1822,6 +1828,10 @@ footer {
 
     .profile-info .subtitle { 
         font-size: 1rem; 
+    }
+
+    .location {
+        font-size: 0.6rem;
     }
 
     .social-links {
