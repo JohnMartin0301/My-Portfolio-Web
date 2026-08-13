@@ -749,10 +749,6 @@ h2 {
 
 
 /* ----- EXPERIENCE SECTION ----- */
-#experience {
-    padding: 80px 0;
-}
-
 #experience h2 {
     margin-bottom: 35px;
 }
@@ -1772,7 +1768,7 @@ footer {
 
 @media (max-width: 600px) {
     .location-item svg {
-        transform: translateY(0.5px);
+        transform: translateY(0px);
     }
 }
 
@@ -1906,6 +1902,10 @@ footer {
     .exp-card__company-logo {
         width: 15px;
         height: 15px;
+    }
+
+    .exp-card__details {
+        gap: 7px;
     }
 
     .exp-card__detail { 
@@ -2074,7 +2074,6 @@ footer {
 
 
 /* ----- RESPONSIVE: SMALL (≤ 390px) -----*/
-
 @media (max-width: 390px) {
     .nav-links { 
         gap: 10px; 
@@ -2104,6 +2103,14 @@ footer {
     .exp-status { 
         font-size: 0.58rem; 
         padding: 3px 7px; 
+    }
+
+    .exp-card__details {
+        gap: 5px;
+    }
+
+    .exp-card__detail {
+        font-size: 0.69rem;
     }
 
     .exp-card__tags {
@@ -2214,7 +2221,6 @@ footer {
         padding: 2px 6px;
     }
 
-
     footer { 
         font-size: 0.8rem; 
     }
@@ -2232,6 +2238,8 @@ footer {
     }
 }
 
+
+/* ----- RESPONSIVE: EXTRA SMALL (≤ 320px) -----*/
 @media (max-width: 320px) {
     .exp-card__title { 
         font-size: 0.83rem; 
@@ -2250,6 +2258,7 @@ footer {
         padding: 2px 5px;
     }
 }
+
 
 /* ----- RESPONSIVE: ULTRA SMALL (≤ 280px) ----- */
 @media (max-width: 280px) {
