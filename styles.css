@@ -420,6 +420,7 @@ body {
     align-items: baseline;
     gap: 1px;
     margin-bottom: 10px;
+    margin-right: 10px;
 }
 
 .brand-j {
@@ -464,9 +465,10 @@ body {
     background: transparent;
     border: none;
     border-radius: 8px;
-    padding: 8px;
+    padding: 8px 0 8px 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+    margin-left: 0;
 }
 
 .theme-toggle:hover {
@@ -478,6 +480,7 @@ body {
     height: 20px;
     fill: var(--text-color);
     display: block;
+    margin-left: 0;
 }
 
 
