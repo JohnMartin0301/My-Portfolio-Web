@@ -10,15 +10,249 @@
     const SPEED      = 0.22;
 
     // ── enhancement config ──
-    const PULSE_INTERVAL_MIN = 4000;
-    const PULSE_INTERVAL_MAX = 9000;
-    const PING_INTERVAL_MIN  = 6000;
-    const PING_INTERVAL_MAX  = 14000;
+    const PULSE_INTERVAL_MIN = 3000;
+    const PULSE_INTERVAL_MAX = 7000;
+    const PING_INTERVAL_MIN  = 4500;
+    const PING_INTERVAL_MAX  = 10000;
     const MAX_ACTIVE_PULSES  = 2;
     const MAX_ACTIVE_PINGS   = 1;
 
     // ── activity config (replaces CLOUD) ──
     const ACTIVITY = { bias: 1.4 };
+
+    // ══════════════════════════════════════════════════════════════════
+    // SEMANTIC SYSTEM LAYER
+    //
+    // Gives a small subset of the existing nodes an infrastructure /
+    // software identity (Server, PowerShell, Python, API, Database,
+    // Validation). The existing pulse / ping / health-check / status-blink
+    // systems below are untouched — this layer just occasionally rides
+    // along on those same events to emit a short, realistic line of
+    // telemetry when one of them happens to land on a component node.
+    //
+    // No new render loop, no new DOM, no new node type. Everything here
+    // is bounded, throttled, and quiet by design.
+    // ══════════════════════════════════════════════════════════════════
+
+    const MAX_TELEMETRY = 2; // hard cap on simultaneous telemetry strings
+
+    // component-to-component communication preferences (weighted)
+    const PREFERENCE = {
+        POWERSHELL: [{ type: 'SERVER', w: 6 }, { type: 'VALIDATION', w: 1 }],
+        PYTHON:     [{ type: 'API', w: 5 }, { type: 'SERVER', w: 3 }, { type: 'DATABASE', w: 1 }],
+        API:        [{ type: 'DATABASE', w: 5 }, { type: 'PYTHON', w: 3 }, { type: 'VALIDATION', w: 2 }, { type: 'SERVER', w: 1 }],
+        DATABASE:   [{ type: 'API', w: 1 }],
+        SERVER:     [{ type: 'VALIDATION', w: 5 }, { type: 'API', w: 1 }],
+        VALIDATION: [{ type: 'API', w: 5 }, { type: 'POWERSHELL', w: 1 }]
+    };
+
+    // component-specific telemetry vocabularies, grouped by semantic state
+    const MESSAGES = {
+        SERVER: {
+            success: ['server online', 'health check passed', 'service running', 'configuration applied', 'system check passed', 'resource check OK', 'configuration verified', 'service status OK', 'system ready', 'CPU check OK', 'memory check OK', 'disk check OK', 'network check OK'],
+            info:    ['connection established'],
+            warning: [],
+            error:   ['service unavailable', 'connection failed']
+        },
+        POWERSHELL: {
+            success: ['Get-Service completed', 'Invoke-Command completed', 'Test-Connection OK', 'configuration applied', 'service restarted', 'firewall rule checked', 'feature verified', 'registry check OK', 'system query completed', 'automation completed'],
+            info:    [],
+            command: ['PS> Get-Service', 'PS> Test-Connection', 'PS> Get-WindowsFeature'],
+            warning: [],
+            error:   []
+        },
+        PYTHON: {
+            success: ['task completed', 'process completed', 'automation executed', 'job completed', 'request handled', 'module loaded', 'execution OK', 'script executed', 'worker finished'],
+            info:    ['process started', 'worker ready', 'task queued'],
+            warning: [],
+            error:   []
+        },
+        DATABASE: {
+            success: ['query executed', 'query completed', 'transaction committed', 'record updated', 'index checked', 'pool healthy'],
+            info:    ['connection established'],
+            warning: ['retry scheduled'],
+            error:   ['query timeout', 'connection failed']
+        },
+        VALIDATION: {
+            success: ['baseline verified', 'validation passed', 'security check OK', 'network check OK', 'configuration verified', 'compliance verified'],
+            info:    [],
+            warning: ['configuration drift detected', 'validation warning'],
+            error:   ['validation failed']
+        }
+    };
+
+    let componentMap   = { byType: {}, byIndex: {} };
+    let telemetryItems = [];
+    let componentGlows = [];
+
+    function pick(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    // walks state buckets in a rolled priority order so a component
+    // always resolves to a real message even if a bucket is empty
+    function pickFromPools(pools, order) {
+        for (const state of order) {
+            const arr = pools[state];
+            if (arr && arr.length) return { text: pick(arr), state };
+        }
+        return null;
+    }
+
+    function pickMessage(type) {
+        const pools = MESSAGES[type];
+        if (!pools) return null;
+
+        if (pools.command && pools.command.length && Math.random() < 0.12) {
+            return { text: pick(pools.command), state: 'info' };
+        }
+
+        const roll = Math.random();
+        let order;
+        if (roll < 0.80)      order = ['success', 'info', 'warning', 'error'];
+        else if (roll < 0.93) order = ['info', 'success', 'warning', 'error'];
+        else if (roll < 0.98) order = ['warning', 'success', 'info', 'error'];
+        else                  order = ['error', 'warning', 'success', 'info'];
+
+        return pickFromPools(pools, order);
+    }
+
+    // realistic REST telemetry — mostly healthy, occasional errors, rare edge codes
+    function generateApiEvent() {
+        if (Math.random() < 0.05) {
+            return { text: pick(['rate limit approaching', 'request delayed']), state: 'warning' };
+        }
+
+        const method = pick(['GET', 'GET', 'GET', 'GET', 'POST', 'POST', 'POST', 'PUT', 'DELETE']);
+        const endpoints = {
+            GET:    ['/health', '/status', '/servers', '/config', '/users', '/api/status'],
+            POST:   ['/servers', '/config', '/auth', '/jobs', '/auth/login'],
+            PUT:    ['/server', '/settings', '/server/config'],
+            DELETE: ['/session', '/server', '/resource']
+        }[method];
+        const statusPool = {
+            GET:    { common: [200], client: [404, 401, 403], server: [500, 503], rare: [429, 304] },
+            POST:   { common: [201, 200, 202], client: [400, 401, 409, 422], server: [500, 502], rare: [429] },
+            PUT:    { common: [200, 204], client: [400, 404, 409], server: [500], rare: [] },
+            DELETE: { common: [204], client: [404, 409], server: [500], rare: [] }
+        }[method];
+
+        const endpoint = pick(endpoints);
+        const roll = Math.random();
+        let status;
+        if (roll < 0.86) status = pick(statusPool.common);
+        else if (roll < 0.94) status = pick(statusPool.client);
+        else if (roll < 0.985) status = pick(statusPool.server);
+        else status = statusPool.rare.length ? pick(statusPool.rare) : pick(statusPool.common);
+
+        // 2xx → success, 1xx/3xx → info, 4xx/5xx → error
+        const state = status < 300 ? 'success' : status < 400 ? 'info' : 'error';
+        return { text: `${method} ${endpoint} ${status}`, state };
+    }
+
+    function getTelemetryForComponent(type) {
+        return type === 'API' ? generateApiEvent() : pickMessage(type);
+    }
+
+    function getStateColor(state, isDark) {
+        switch (state) {
+            case 'success': return isDark ? '34,197,94'   : '22,163,74';   // matches existing site green
+            case 'warning': return isDark ? '245,158,11'  : '180,83,9';    // muted amber
+            case 'error':   return isDark ? '231,76,60'   : '192,57,43';   // matches existing form-error red
+            default:        return isDark ? '59,130,246'  : '37,99,235';   // info — existing accent blue
+        }
+    }
+
+    function pickPreferredTarget(sourceType) {
+        const list = PREFERENCE[sourceType];
+        if (!list || !list.length) return null;
+        const total = list.reduce((sum, o) => sum + o.w, 0);
+        let r = Math.random() * total;
+        for (const o of list) {
+            if (r < o.w) return o.type;
+            r -= o.w;
+        }
+        return list[list.length - 1].type;
+    }
+
+    // fires only when there's room, and only sometimes — quiet by design
+    function trySpawnTelemetry(nodeIdx, type, probability) {
+        const responsiveScale = window.innerWidth < 480 ? 0.5 : window.innerWidth < 768 ? 0.75 : 1;
+        if (telemetryItems.length >= MAX_TELEMETRY) return;
+        if (Math.random() > probability * responsiveScale) return;
+
+        const ev = getTelemetryForComponent(type);
+        const n  = nodes[nodeIdx];
+        if (!ev || !n) return;
+
+        const durationFrames = 190 + Math.random() * 70; // ~3.2–4.3s at 60fps
+        telemetryItems.push({
+            text: ev.text,
+            state: ev.state,
+            nodeIdx,
+            life: 0,
+            speed: 1 / durationFrames
+        });
+        componentGlows.push({ idx: nodeIdx, life: 1.0, speed: 0.03, state: ev.state });
+    }
+
+    // attempts a semantically-valid, spatially-reasonable component-to-component
+    // ping; returns false if none is available so the caller can fall back to
+    // the original nearest-neighbor ping behavior
+    function trySpawnSemanticPing() {
+        const byType = componentMap.byType;
+        const types  = Object.keys(byType);
+        if (types.length < 2) return false;
+
+        const sourceType = pick(types);
+        const targetType = pickPreferredTarget(sourceType);
+        if (!targetType || byType[targetType] === undefined) return false;
+
+        const ai = byType[sourceType];
+        const bi = byType[targetType];
+        if (ai === bi) return false;
+
+        const a = nodes[ai], b = nodes[bi];
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        const maxSemanticDist = window.innerWidth < 480 ? 260 : window.innerWidth < 768 ? 340 : 420;
+        if (dist > maxSemanticDist) return false; // keep it visually consistent with existing short pings
+
+        pings.push({
+            ai, bi, t: 0,
+            speed: 0.007 + Math.random() * 0.005,
+            life: 1,
+            semantic: true,
+            sourceType, targetType,
+            arrived: false
+        });
+        return true;
+    }
+
+    // fade-in → hold → fade-out curve for telemetry text
+    function telemetryAlpha(life) {
+        if (life < 0.15) return life / 0.15;
+        if (life > 0.80) return Math.max(0, (1 - life) / 0.20);
+        return 1;
+    }
+
+    // assigns 6 of the existing nodes a semantic identity; every other
+    // node in the network is untouched and stays anonymous
+    function assignComponents() {
+        const types = ['SERVER', 'POWERSHELL', 'PYTHON', 'API', 'DATABASE', 'VALIDATION'];
+        const indices = [...Array(nodes.length).keys()];
+        for (let i = indices.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [indices[i], indices[j]] = [indices[j], indices[i]];
+        }
+        const byType = {}, byIndex = {};
+        types.forEach((type, i) => {
+            if (i >= indices.length) return;
+            byType[type] = indices[i];
+            byIndex[indices[i]] = type;
+        });
+        componentMap = { byType, byIndex };
+    }
 
     function resize() {
         const dpr = window.devicePixelRatio || 1;
@@ -45,6 +279,7 @@
                     : window.innerWidth < 768 ? 28
                     : NODE_COUNT;
         nodes = Array.from({ length: count }, makeNode);
+        assignComponents();
     }
 
     // ── enhancement state ──
@@ -97,10 +332,19 @@
             life:  0,
             speed: 0.006 + Math.random() * 0.004,
         });
+
+        // component blink → sometimes text
+        const compType = componentMap.byIndex[idx];
+        if (compType) trySpawnTelemetry(idx, compType, 0.4);
     }
 
     function spawnPing() {
         if (pings.length >= MAX_ACTIVE_PINGS) return;
+
+        // favor a believable component-to-component exchange when one exists;
+        // falls back to the original nearest-neighbor ping otherwise
+        if (Math.random() < 0.5 && trySpawnSemanticPing()) return;
+
         let ai = 0;
         let bestScore = -1;
         for (let i = 0; i < 6; i++) {
@@ -133,6 +377,7 @@
             t:     0,
             speed: 0.008 + Math.random() * 0.005,
             life:  1,
+            arrived: false
         });
     }
 
@@ -151,6 +396,12 @@
         }
         if (bi === -1) return;
         healthChecks.push({ ai, bi, life: 1.0 });
+
+        // Server → Validation is the one health-check pairing with real meaning
+        const at = componentMap.byIndex[ai];
+        const bt = componentMap.byIndex[bi];
+        if (at === 'SERVER' && bt === 'VALIDATION') trySpawnTelemetry(bi, 'VALIDATION', 0.6);
+        else if (bt === 'SERVER' && at === 'VALIDATION') trySpawnTelemetry(ai, 'VALIDATION', 0.6);
     }
 
     // ── status blink (node dims briefly, like a background process) ──
@@ -158,6 +409,10 @@
         if (statusBlinks.length >= 3) return;
         const idx = Math.floor(Math.random() * nodes.length);
         statusBlinks.push({ idx, life: 1.0, speed: 0.028 + Math.random() * 0.018 });
+
+        // component blink → sometimes text
+        const compType = componentMap.byIndex[idx];
+        if (compType) trySpawnTelemetry(idx, compType, 0.3);
     }
 
     function draw(ts) {
@@ -252,6 +507,12 @@
                 p.t += p.speed;
                 if (p.t > 1) p.t = 1;
             } else {
+                // the dot has just reached its destination — this is the
+                // one moment a data-transfer event actually "arrives"
+                if (!p.arrived) {
+                    p.arrived = true;
+                    if (p.semantic) trySpawnTelemetry(p.bi, p.targetType, 0.7);
+                }
                 p.life -= 0.04;
             }
 
@@ -312,6 +573,42 @@
             ctx.fillStyle = `rgba(${accentR},${alpha.toFixed(3)})`;
             ctx.fill();
         });
+
+        // ── draw component activity glows (weaker than telemetry text) ──
+        componentGlows = componentGlows.filter(g => g.life > 0);
+        componentGlows.forEach(g => {
+            g.life -= g.speed;
+            const n = nodes[g.idx];
+            if (!n) return;
+            const curve = g.life < 0.5 ? g.life * 2 : (1 - g.life) * 2;
+            const alpha = curve * 0.14;
+            const rgb   = getStateColor(g.state, isDark);
+
+            ctx.beginPath();
+            ctx.arc(n.x, n.y, n.r * 3.2, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${rgb},${alpha.toFixed(3)})`;
+            ctx.fill();
+        });
+
+        // ── draw telemetry (short, component-specific system events) ──
+        telemetryItems = telemetryItems.filter(t => t.life < 1);
+        if (telemetryItems.length) {
+            const fontSize = window.innerWidth < 480 ? 8 : 9;
+            ctx.font = `${fontSize}px "Courier New", monospace`;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'left';
+
+            telemetryItems.forEach(t => {
+                t.life += t.speed;
+                const n = nodes[t.nodeIdx];
+                if (!n) return;
+                const alpha = telemetryAlpha(t.life) * 0.8;
+                const rgb   = getStateColor(t.state, isDark);
+
+                ctx.fillStyle = `rgba(${rgb},${alpha.toFixed(3)})`;
+                ctx.fillText(t.text, n.x + 9, n.y - 11);
+            });
+        }
 
         animId = requestAnimationFrame(draw);
     }

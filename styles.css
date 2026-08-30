@@ -465,7 +465,7 @@ body {
     background: transparent;
     border: none;
     border-radius: 8px;
-    padding: 8px 0 8px 8px;
+    padding: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
     margin-left: 0;
